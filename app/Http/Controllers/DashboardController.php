@@ -47,7 +47,7 @@ class DashboardController extends Controller
     }
 
     // FITUR BARU: Input Pengeluaran Manual & Update Grafik
-    // FITUR BARU: Input Pengeluaran Manual & Update Grafik (TANPA potong saldo utama)
+    // ==============================================================FITUR BARU: Input Pengeluaran Manual & Update Grafik 
     public function storeManualExpense(Request $request) {
         $request->validate([
             'budget_id' => 'required|exists:budgets,id',
@@ -71,5 +71,29 @@ class DashboardController extends Controller
 
         // Hapus kode pemotongan $user->balance
         return back()->with('success', 'Catatan pengeluaran berhasil ditambahkan ke grafik!');
+    }
+
+    // ==========================================================================CRUD Anggaran (Update & Delete)
+    // FITUR BARU: Update Limit Anggaran
+    public function updateBudget(Request $request, $id) {
+        $request->validate([
+            'limit_amount' => 'required|numeric|min:1000'
+        ]);
+
+        // Cari anggaran milik user yang sedang login
+        $budget = Budget::where('user_id', Auth::id())->findOrFail($id);
+        $budget->update([
+            'limit_amount' => $request->limit_amount
+        ]);
+
+        return back()->with('success', 'Limit anggaran berhasil diubah!');
+    }
+
+    // ==============================================================FITUR BARU: Hapus Anggaran
+    public function destroyBudget($id) {
+        $budget = Budget::where('user_id', Auth::id())->findOrFail($id);
+        $budget->delete();
+
+        return back()->with('success', 'Anggaran berhasil dihapus!');
     }
 }

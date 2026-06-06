@@ -153,7 +153,7 @@
                     </div>
                 </div>
 
-                <!-- CHART / GRAFIK -->
+                <!-- CHART / GRAFIK ==========================-->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100">
                         <h3 class="font-extrabold text-slate-700 mb-5 text-center text-lg">📊 Pengeluaran vs Limit</h3>
@@ -165,6 +165,57 @@
                             <canvas id="pieChart"></canvas>
                         </div>
                     </div>
+                    <form action="{{ route('budget.update', $budget->id) }}" method="POST" class="flex gap-2 items-center">
+                            <div class="mt-8">
+                    <h3 class="text-xl font-extrabold text-slate-800 mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-blue-500"></i> Kelola Anggaran Saat Ini
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        @forelse($budgets as $budget)
+                            <div class="bg-white p-5 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100" style="display: block; position: relative; box-sizing: border-box; clear: both; min-height: 150px;">
+                                
+                                <div style="display: block; width: 100%; content: ''; clear: both; margin-bottom: 15px; overflow: hidden;">
+                                    <div style="float: left; width: 75%; box-sizing: border-box;">
+                                        <h4 class="font-bold text-slate-700 text-lg" style="margin: 0; padding: 0;">{{ $budget->category }}</h4>
+                                        <p class="text-xs text-slate-400 font-medium" style="margin: 2px 0 0 0; padding: 0;">Terpakai: Rp {{ number_format($budget->spent_amount, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div style="float: right; width: 25%; text-align: right; box-sizing: border-box;">
+                                        <form action="{{ route('budget.destroy', $budget->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori anggaran {{ $budget->category }}? Grafik pengeluaran juga akan ikut hilang.');" style="display: inline-block; margin: 0; padding: 0;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors" style="width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                                <i class="fa-solid fa-trash text-xs"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- Form Update Limit Anggaran -->
+                                <form action="{{ route('budget.update', $budget->id) }}" method="POST" style="display: grid; grid-template-columns: 1fr 85px; gap: 8px; width: 100%; box-sizing: border-box; clear: both; margin-top: 15px; padding: 0;">
+                                    @csrf
+                                    @method('PUT')
+                                    
+                                    <div style="display: grid; grid-template-columns: auto 1fr; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; align-items: center; box-sizing: border-box;">
+                                        <span style="padding: 10px 12px; background-color: #f1f5f9; border-right: 1px solid #e2e8f0; color: #64748b; font-size: 13px; font-weight: bold; user-select: none;">
+                                            Rp
+                                        </span>
+                                        <input type="number" step="any" name="limit_amount" value="{{ $budget->limit_amount }}" required
+                                            style="width: 100%; padding: 10px; background: transparent; border: none; outline: none; color: #334155; font-size: 14px; font-weight: 600; box-sizing: border-box; display: block;">
+                                    </div>
+                                    
+                                    <button type="submit" class="hover:bg-blue-600 hover:text-white transition-colors" style="background-color: #dbeafe; color: #2563eb; border-radius: 12px; font-weight: bold; font-size: 13px; border: none; cursor: pointer; width: 85px; height: 100%; display: block; text-align: center; box-sizing: border-box; margin: 0;">
+                                        Update
+                                    </button>
+                                </form>
+
+                            </div>
+                        @empty
+                            <div class="col-span-full bg-white p-6 rounded-3xl border border-dashed border-slate-300 text-center text-slate-500 text-sm font-medium">
+                                Belum ada anggaran yang dibuat. Buat anggaran pertamamu di atas!
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
                 </div>
 
             </div> <!-- End Padding Container -->

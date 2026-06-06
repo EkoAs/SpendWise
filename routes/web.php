@@ -67,5 +67,9 @@ Route::post('/qris', [TransactionController::class, 'processQris'])->name('qris.
 Route::post('/budget', [DashboardController::class, 'storeBudget'])->name('budget.store');
 Route::post('/manual-expense', [DashboardController::class, 'storeManualExpense'])->name('expense.store'); // INI BARU
 
-
+// CRUD Anggaran update and del
 Route::post('/budget', [DashboardController::class, 'storeBudget'])->name('budget.store');
+
+// CRUD Anggaran update and del
+Route::put('/budget/{id}', [DashboardController::class, 'updateBudget'])->name('budget.update');
+    Route::delete('/budget/{id}', [DashboardController::class, 'destroyBudget'])->name('budget.destroy');
