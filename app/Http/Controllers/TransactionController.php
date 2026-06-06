@@ -196,6 +196,17 @@ class TransactionController extends Controller
         $user->balance -= $amount;
         $user->save();
 
+        // Cari otomatis apakah user punya anggaran bernama 'Internet' atau 'Pulsa'
+        $budget = \App\Models\Budget::where('user_id', $user->id)
+            ->where(function($q) {
+                $q->where('category', 'LIKE', '%Internet%')->orWhere('category', 'LIKE', '%Pulsa%');
+            })->first();
+        
+        if ($budget) {
+            $budget->spent_amount += $amount;
+            $budget->save();
+        }
+
         Transaction::create([
             'user_id' => $user->id,
             'type' => 'netmarket',

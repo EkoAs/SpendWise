@@ -20,7 +20,13 @@ class DashboardController extends Controller
         // Ambil semua data anggaran milik user
         $budgets = Budget::where('user_id', $user->id)->get();
         
-        return view('dashboard', compact('user', 'transactions', 'budgets'));
+        // FITUR BARU: Menyiapkan data untuk Chart.js
+        $chartLabels = $budgets->pluck('category');
+        $chartSpent = $budgets->pluck('spent_amount');
+        $chartLimit = $budgets->pluck('limit_amount');
+        
+        // Jangan lupa variabel chart-nya dimasukkan ke compact()
+        return view('dashboard', compact('user', 'transactions', 'budgets', 'chartLabels', 'chartSpent', 'chartLimit'));
     }
 
     // Fungsi menyimpan Anggaran Baru (Poin 3D - Write Process)
@@ -38,5 +44,32 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Kategori anggaran berhasil ditambahkan!');
+    }
+
+    // FITUR BARU: Input Pengeluaran Manual & Update Grafik
+    // FITUR BARU: Input Pengeluaran Manual & Update Grafik (TANPA potong saldo utama)
+    public function storeManualExpense(Request $request) {
+        $request->validate([
+            'budget_id' => 'required|exists:budgets,id',
+            'amount' => 'required|numeric|min:1000',
+            'description' => 'required|string|max:255'
+        ]);
+
+        $budget = Budget::find($request->budget_id);
+
+        // 1. Tambah Pemakaian di Anggaran (Otomatis geser grafik)
+        $budget->spent_amount += $request->amount;
+        $budget->save();
+
+        // 2. Catat di Log Transaksi sebagai 'pencatatan manual' (opsional agar tetap ada history)
+        Transaction::create([
+            'user_id' => Auth::id(),
+            'type' => 'manual',
+            'amount' => $request->amount,
+            'description' => 'Catat: ' . $request->description . ' (' . $budget->category . ')',
+        ]);
+
+        // Hapus kode pemotongan $user->balance
+        return back()->with('success', 'Catatan pengeluaran berhasil ditambahkan ke grafik!');
     }
 }

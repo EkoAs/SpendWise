@@ -63,7 +63,9 @@ Route::post('/netmarket', [TransactionController::class, 'processNetMarket'])->n
 Route::get('/qris', [TransactionController::class, 'showQris'])->name('qris');
 Route::post('/qris', [TransactionController::class, 'processQris'])->name('qris.process');
 
-
+// manual input tagihan
+Route::post('/budget', [DashboardController::class, 'storeBudget'])->name('budget.store');
+Route::post('/manual-expense', [DashboardController::class, 'storeManualExpense'])->name('expense.store'); // INI BARU
 
 
 Route::post('/budget', [DashboardController::class, 'storeBudget'])->name('budget.store');
