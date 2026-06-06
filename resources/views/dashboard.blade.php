@@ -52,32 +52,126 @@
                     <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                     <span class="text-xs font-semibold text-center">Tagihan</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
+                <a href="{{ route('netmarket') }}" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
                     <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-wifi"></i></div>
                     <span class="text-xs font-semibold text-center">NetMarket</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
+                <a href="{{ route('qris') }}" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
                     <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-qrcode"></i></div>
                     <span class="text-xs font-semibold text-center">QRIS</span>
                 </a>
             </div>
+            <!-- <div class="p-6 flex-1 bg-gray-50">
+                <h3 class="font-bold text-gray-700 mb-4">Log Transaksi Terbaru</h3>
+                
+                @forelse($transactions as $trx)
+                    @php
+                        $isIncome = $trx->type === 'topup';
+                        $color = $isIncome ? 'green' : 'red';
+                        $sign = $isIncome ? '+' : '-';
+                    @endphp -->
+<!-- 
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-{{ $color }}-500 mb-3 flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-sm capitalize">{{ $trx->description }}</p>
+                            <p class="text-xs text-gray-500">{{ $trx->created_at->format('d M Y, H:i') }}</p>
+                        </div>
+                        <span class="text-{{ $color }}-600 font-bold text-sm">
+                            {{ $sign }} Rp {{ number_format($trx->amount, 0, ',', '.') }}
+                        </span>
+                    </div>
+                @empty
+                    <div class="text-center text-gray-500 text-sm mt-6">
+                        Belum ada transaksi bulan ini.
+                    </div>
+                @endforelse
 
-            <div class="p-6 flex-1 bg-gray-50">
-                <h3 class="font-bold text-gray-700 mb-4">Pengingat Tagihan & Log Terbaru</h3>
-                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-red-500 mb-3 flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-sm">Tagihan Listrik</p>
-                        <p class="text-xs text-gray-500">Jatuh tempo: 3 Hari Lagi</p>
+            </div> -->
+
+            <div class="p-6 flex-1 bg-gray-50 space-y-6">
+                
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-3"><i class="fa-solid fa-bell text-amber-500 mr-1"></i> Pengingat Tagihan</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-red-500 flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-sm text-gray-800">Air PDAM</p>
+                                <p class="text-xs text-gray-500">Tempo: 10 Juni 2026 (Sisa 4 Hari)</p>
+                            </div>
+                            <span class="text-red-600 font-bold text-sm">Rp 130.000</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-orange-500 flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-sm text-gray-800">Listrik PLN</p>
+                                <p class="text-xs text-gray-500">Tempo: 15 Juni 2026 (Sisa 9 Hari)</p>
+                            </div>
+                            <span class="text-orange-600 font-bold text-sm">Rp 150.000</span>
+                        </div>
                     </div>
-                    <span class="text-red-600 font-bold text-sm">- Rp 130.000</span>
                 </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500 mb-3 flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-sm">Top Up Berhasil</p>
-                        <p class="text-xs text-gray-500">12 Okt 2026</p>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border">
+                    <h3 class="font-bold text-gray-700 mb-3"><i class="fa-solid fa-folder-plus text-blue-500 mr-1"></i> Tambah Kategori Anggaran</h3>
+                    <form action="{{ route('budget.store') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+                        @csrf
+                        <input type="text" name="category" placeholder="Contoh: Makan, Kost, Kuliah" class="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="number" name="limit_amount" placeholder="Batas Maksimal (Rp)" class="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">Simpan</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-3"><i class="fa-solid fa-chart-bar text-purple-500 mr-1"></i> Grafik Batang Pengeluaran Bulanan</h3>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border space-y-4">
+                        @forelse($budgets as $budget)
+                            @php
+                                // Hitung persentase pemakaian anggaran
+                                $percentage = $budget->limit_amount > 0 ? ($budget->spent_amount / $budget->limit_amount) * 100 : 0;
+                                if ($percentage > 100) $percentage = 100;
+                                
+                                // Poin 3E: Jika di atas 80%, beri alert warna merah, jika aman beri warna biru
+                                $barColor = $percentage >= 80 ? 'bg-red-500' : 'bg-blue-500';
+                            @endphp
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-gray-700">{{ $budget->category }}</span>
+                                    <span class="text-gray-500">Rp {{ number_format($budget->spent_amount,0,',','.') }} / Rp {{ number_format($budget->limit_amount,0,',','.') }}</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                    <div class="{{ $barColor }} h-3 rounded-full transition-all duration-500" style="width: {{ $percentage }}%"></div>
+                                </div>
+                                @if($percentage >= 80)
+                                    <p class="text-[10px] text-red-500 font-bold mt-1"><i class="fa-solid fa-triangle-exclamation"></i> Alert: Pengeluaran hampir atau sudah melebihi batas maksimal!</p>
+                                @endif
+                            </div>
+                        @empty
+                            <p class="text-sm text-gray-500 text-center py-2">Belum ada kategori anggaran. Silakan buat di atas!</p>
+                        @endforelse
                     </div>
-                    <span class="text-green-600 font-bold text-sm">+ Rp 50.000</span>
                 </div>
+
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-3"><i class="fa-solid fa-history text-teal-500 mr-1"></i> Log Transaksi Terbaru</h3>
+                    @forelse($transactions as $trx)
+                        @php
+                            $isIncome = $trx->type === 'topup';
+                            $color = $isIncome ? 'green' : 'red';
+                            $sign = $isIncome ? '+' : '-';
+                        @endphp
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-{{ $color }}-500 mb-3 flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-sm text-gray-800 capitalize">{{ $trx->description }}</p>
+                                <p class="text-xs text-gray-500">{{ $trx->created_at->format('d M Y, H:i') }}</p>
+                            </div>
+                            <span class="text-{{ $color }}-600 font-bold text-sm">
+                                {{ $sign }} Rp {{ number_format($trx->amount, 0, ',', '.') }}
+                            </span>
+                        </div>
+                    @empty
+                        <div class="text-center text-gray-500 text-sm py-4 bg-white rounded-xl border">Belum ada transaksi.</div>
+                    @endforelse
+                </div>
+
             </div>
 
             <footer class="bg-gray-800 text-gray-400 text-xs text-center p-4">

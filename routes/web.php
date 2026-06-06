@@ -52,3 +52,18 @@ Route::post('/va', [TransactionController::class, 'processVa'])->name('va.proces
 // Fitur Tagihan
 Route::get('/bill', [TransactionController::class, 'showBill'])->name('bill');
 Route::post('/bill', [TransactionController::class, 'processBill'])->name('bill.process');
+
+
+
+// Fitur NetMarket
+Route::get('/netmarket', [TransactionController::class, 'showNetMarket'])->name('netmarket');
+Route::post('/netmarket', [TransactionController::class, 'processNetMarket'])->name('netmarket.process');
+
+// Fitur QRIS
+Route::get('/qris', [TransactionController::class, 'showQris'])->name('qris');
+Route::post('/qris', [TransactionController::class, 'processQris'])->name('qris.process');
+
+
+
+
+Route::post('/budget', [DashboardController::class, 'storeBudget'])->name('budget.store');

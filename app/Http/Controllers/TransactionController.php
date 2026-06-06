@@ -163,4 +163,76 @@ class TransactionController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Pembayaran Tagihan ' . $request->biller . ' berhasil!');
     }
+
+
+
+    // === FITUR NETMARKET (PULSA & DATA) ===
+    public function showNetMarket() {
+        return view('netmarket');
+    }
+
+    public function processNetMarket(Request $request) {
+        $request->validate([
+            'phone' => 'required|string',
+            'package' => 'required|string',
+            'pin' => 'required|string'
+        ]);
+
+        // Harga fixed sesuai pilihan
+        $prices = [
+            'Pulsa 20.000' => 21000,
+            'Pulsa 50.000' => 51000,
+            'Kuota 10GB (30 Hari)' => 45000,
+            'Kuota 25GB (30 Hari)' => 85000,
+            'Kuota Unlimited (7 Hari)' => 35000,
+        ];
+        $amount = $prices[$request->package] ?? 0;
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->pin, $user->pin)) return back()->withErrors(['pin' => 'PIN salah!']);
+        if ($user->balance < $amount) return back()->withErrors(['amount' => 'Saldo tidak mencukupi!']);
+
+        $user->balance -= $amount;
+        $user->save();
+
+        Transaction::create([
+            'user_id' => $user->id,
+            'type' => 'netmarket',
+            'amount' => $amount,
+            'description' => 'Pembelian ' . $request->package . ' (' . $request->phone . ')',
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Pembelian ' . $request->package . ' berhasil!');
+    }
+
+    // ============================================================= FITUR QRIS ===
+    public function showQris() {
+        return view('qris');
+    }
+
+    public function processQris(Request $request) {
+        $request->validate([
+            'amount' => 'required|numeric|min:1000',
+            'pin' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->pin, $user->pin)) return back()->withErrors(['pin' => 'PIN salah!']);
+        if ($user->balance < $request->amount) return back()->withErrors(['amount' => 'Saldo tidak mencukupi!']);
+
+        $user->balance -= $request->amount;
+        $user->save();
+
+        Transaction::create([
+            'user_id' => $user->id,
+            'type' => 'qris',
+            'amount' => $request->amount,
+            'description' => 'Pembayaran QRIS Merchant Dummy',
+        ]);
+
+        // Mengirim data nominal untuk dijadikan QR di halaman sukses (opsional)
+        return redirect()->route('dashboard')->with('success', 'Pembayaran QRIS Rp ' . number_format($request->amount, 0, ',', '.') . ' berhasil!');
+    }
 }
