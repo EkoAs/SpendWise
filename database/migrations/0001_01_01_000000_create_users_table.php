@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 1. Tabel Users
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -19,6 +20,23 @@ return new class extends Migration
             $table->string('pin'); // Pengganti password
             $table->decimal('balance', 15, 2)->default(0); // Saldo utama
             $table->timestamps();
+        });
+
+        // 2. Tabel Reset Password (Bawaan Laravel, kita ubah email jadi phone)
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('phone')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        // 3. Tabel Sessions (Ini yang tadi bikin error)
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
         });
     }
 
