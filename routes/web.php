@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 
 // Halaman Utama (nanti diarahkan ke dashboard jika sudah login)
 Route::get('/', function () {
@@ -21,7 +22,5 @@ Route::middleware('guest')->group(function () {
     Route::post('/verify', [AuthController::class, 'verify'])->name('verify.process');
 });
 
-// Dashboard (sementara kita buat kosongan untuk tes setelah berhasil login)
-Route::get('/dashboard', function () {
-    return "Selamat datang di Halaman Utama SpendWise!";
-})->name('dashboard')->middleware('auth');
+// Ubah route dashboard yang lama menjadi ini:
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
