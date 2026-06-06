@@ -33,19 +33,22 @@
         <div class="w-full md:w-1/2 flex flex-col">
             
             <div class="h-[50vh] md:h-auto bg-white p-6 grid grid-cols-3 gap-4 content-center shadow-sm">
-                <a href="#" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
+                <a href="{{ route('transfer') }}" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-money-bill-transfer"></i></div>
                     <span class="text-xs font-semibold text-center">Transfer</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
+
+                <a href="{{ route('va') }}" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
                     <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-building-columns"></i></div>
                     <span class="text-xs font-semibold text-center">Bayar VA</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
+
+                <a href="{{ route('topup') }}" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
                     <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-wallet"></i></div>
                     <span class="text-xs font-semibold text-center">Top Up</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
+
+                <a href="{{ route('bill') }}" class="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-blue-50 transition">
                     <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-2 text-xl"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                     <span class="text-xs font-semibold text-center">Tagihan</span>
                 </a>

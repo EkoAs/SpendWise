@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransactionController;
 
 // Halaman Utama (nanti diarahkan ke dashboard jika sudah login)
 Route::get('/', function () {
@@ -24,3 +25,30 @@ Route::middleware('guest')->group(function () {
 
 // Ubah route dashboard yang lama menjadi ini:
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Fitur Transaksi
+    Route::get('/transfer', [TransactionController::class, 'showTransfer'])->name('transfer');
+    Route::post('/transfer', [TransactionController::class, 'processTransfer'])->name('transfer.process');
+});
+
+
+
+// Fitur Transaksi
+Route::get('/transfer', [TransactionController::class, 'showTransfer'])->name('transfer');
+Route::post('/transfer', [TransactionController::class, 'processTransfer'])->name('transfer.process');
+
+// Fitur Top Up
+Route::get('/topup', [TransactionController::class, 'showTopUp'])->name('topup');
+Route::post('/topup', [TransactionController::class, 'processTopUp'])->name('topup.process');
+
+
+// Fitur Bayar VA
+Route::get('/va', [TransactionController::class, 'showVa'])->name('va');
+Route::post('/va', [TransactionController::class, 'processVa'])->name('va.process');
+
+// Fitur Tagihan
+Route::get('/bill', [TransactionController::class, 'showBill'])->name('bill');
+Route::post('/bill', [TransactionController::class, 'processBill'])->name('bill.process');
