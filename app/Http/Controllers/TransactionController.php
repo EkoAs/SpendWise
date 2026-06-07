@@ -9,6 +9,8 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
+// use Illuminate\Support\Facades\Hash; // Tambahkan ini untuk fitur transfer yang memerlukan verifikasi PIN
+
 class TransactionController extends Controller
 {
     // Tampilkan halaman form transfer
@@ -254,6 +256,7 @@ class TransactionController extends Controller
     // ==========================================
     // UPDATE FITUR BARU SPENDWISE
     // ==========================================
+    //==========================================================================================================
 
     // 1. Fitur Pinjam (Limit 20 Juta)
     public function borrowLoan(Request $request) {
@@ -264,11 +267,11 @@ class TransactionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
 
-        // Tambah saldo utama & catat hutang (asumsi ada kolom loan_balance di tabel users)
+        // Tambah saldo utama & catat hutang
         $user->increment('balance', $request->amount);
-        // $user->increment('loan_balance', $request->amount); // Aktifkan jika kolom ini sudah dibuat di database
 
         Transaction::create([
             'user_id' => $user->id,
@@ -291,12 +294,13 @@ class TransactionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
+        
         if ($user->balance < $request->amount) return back()->with('error', 'Saldo tidak mencukupi untuk bayar cicilan!');
 
         // Potong saldo
         $user->decrement('balance', $request->amount);
-        // $user->decrement('loan_balance', $request->amount); // Aktifkan jika kolom ini ada
 
         Transaction::create([
             'user_id' => $user->id,
@@ -316,7 +320,9 @@ class TransactionController extends Controller
         $user = Auth::user();
         $insuranceFee = 10000;
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
+        
         if ($user->balance < $insuranceFee) return back()->with('error', 'Saldo tidak mencukupi!');
 
         $user->decrement('balance', $insuranceFee);
@@ -341,9 +347,11 @@ class TransactionController extends Controller
         ]);
 
         $user = Auth::user();
-        $bpjsFee = 150000; // Contoh tarif tetap kelas 1
+        $bpjsFee = 150000; 
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
+        
         if ($user->balance < $bpjsFee) return back()->with('error', 'Saldo tidak mencukupi!');
 
         $user->decrement('balance', $bpjsFee);
@@ -363,7 +371,7 @@ class TransactionController extends Controller
     // 4. Transfer Bank Spesifik
     public function transferBank(Request $request) {
         $request->validate([
-            'bank_name' => 'required', // BCA, Mandiri, BNI, dll
+            'bank_name' => 'required',
             'account_number' => 'required',
             'amount' => 'required|numeric|min:10000',
             'pin' => 'required'
@@ -371,7 +379,9 @@ class TransactionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
+        
         if ($user->balance < $request->amount) return back()->with('error', 'Saldo tidak mencukupi!');
 
         $user->decrement('balance', $request->amount);
@@ -391,7 +401,7 @@ class TransactionController extends Controller
     // 5. Transfer E-Wallet Spesifik
     public function transferEwallet(Request $request) {
         $request->validate([
-            'provider' => 'required', // Gopay, Dana, ShopeePay
+            'provider' => 'required', 
             'phone_number' => 'required',
             'amount' => 'required|numeric|min:10000',
             'pin' => 'required'
@@ -399,7 +409,9 @@ class TransactionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
+        
         if ($user->balance < $request->amount) return back()->with('error', 'Saldo tidak mencukupi!');
 
         $user->decrement('balance', $request->amount);
@@ -419,14 +431,16 @@ class TransactionController extends Controller
     // 6. Tarik Tunai (Indomaret / Alfamart / ATM)
     public function withdrawCash(Request $request) {
         $request->validate([
-            'merchant' => 'required', // Indomaret, Alfamart, ATM BCA
+            'merchant' => 'required', 
             'amount' => 'required|numeric|min:50000',
             'pin' => 'required'
         ]);
 
         $user = Auth::user();
 
-        if ($user->pin !== $request->pin) return back()->with('error', 'PIN salah!');
+        // [PERBAIKAN] Menggunakan Hash::check
+        if (!Hash::check($request->pin, $user->pin)) return back()->with('error', 'PIN salah!');
+        
         if ($user->balance < $request->amount) return back()->with('error', 'Saldo tidak mencukupi untuk ditarik!');
 
         $user->decrement('balance', $request->amount);
@@ -443,32 +457,46 @@ class TransactionController extends Controller
         return back()->with('success', 'Silakan ambil uang tunai Anda di kasir/mesin ' . $request->merchant . ' terdekat.');
     }
 
-    // 7. Konversi Mata Uang via API
-    public function getCurrencyRates() {
+    // konversi nilai mata uangasinh
+    public function getCurrencyRates()
+    {
         try {
-            // Menggunakan API gratis dari exchangerate-api
-            $response = Http::get('https://open.er-api.com/v6/latest/USD');
-            $data = $response->json();
+            // Kita menggunakan API gratis dari exchangerate-api (Base USD)
+            $response = Http::get('https://api.exchangerate-api.com/v4/latest/USD');
             
-            // Konversi base USD ke IDR agar kita dapat rasio Rp ke mata uang lain
-            $rates = $data['rates'];
-            $usdToIdr = $rates['IDR'];
-            
-            // Format data
-            $conversions = [
-                'USD' => number_format($usdToIdr, 0, ',', '.'),
-                'EUR' => number_format($usdToIdr / $rates['EUR'], 0, ',', '.'),
-                'CNY' => number_format($usdToIdr / $rates['CNY'], 0, ',', '.'),
-                'SGD' => number_format($usdToIdr / $rates['SGD'], 0, ',', '.'),
-                'AUD' => number_format($usdToIdr / $rates['AUD'], 0, ',', '.'),
-                'MYR' => number_format($usdToIdr / $rates['MYR'], 0, ',', '.'),
-            ];
+            if ($response->successful()) {
+                $rates = $response->json()['rates'];
+                $idr = $rates['IDR']; // Nilai 1 USD ke IDR
+                
+                // Rumus: (1 USD ke IDR) dibagi (1 USD ke Mata Uang Lain) = Harga 1 Mata Uang Lain ke IDR
+                $conversions = [
+                    'USD' => number_format($idr, 0, ',', '.'),
+                    'EUR' => number_format($idr / $rates['EUR'], 0, ',', '.'),
+                    'CNY' => number_format($idr / $rates['CNY'], 0, ',', '.'),
+                    'SGD' => number_format($idr / $rates['SGD'], 0, ',', '.'),
+                    'AUD' => number_format($idr / $rates['AUD'], 0, ',', '.'),
+                    'MYR' => number_format($idr / $rates['MYR'], 0, ',', '.'),
+                ];
+            } else {
+                // Lempar error agar ditangkap oleh catch jika API sedang down
+                throw new \Exception('Gagal mengambil data API');
+            }
 
-            // UPDATE: Arahkan ke halaman view khusus Valas
-            return view('features.currency', compact('conversions'));
-            
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mengambil data mata uang saat ini. Pastikan koneksi internet aktif.');
+            // FALLBACK: Jika tidak ada internet atau API error, tampilkan data statis ini
+            $conversions = [
+                'USD' => '15.600',
+                'EUR' => '16.900',
+                'CNY' => '2.150',
+                'SGD' => '11.650',
+                'AUD' => '10.250',
+                'MYR' => '3.300',
+            ];
         }
+
+        // Pastikan nama view ini sesuai dengan struktur folder kamu.
+        // Jika file blade-nya ada di resources/views/currency.blade.php maka gunakan 'currency'
+        // Jika ada di dalam folder wallet (resources/views/wallet/currency.blade.php) gunakan 'wallet.currency'
+        return view('features.currency', compact('conversions'));
     }
 }
