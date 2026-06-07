@@ -461,8 +461,8 @@ class TransactionController extends Controller
     public function getCurrencyRates()
     {
         try {
-            // Kita menggunakan API gratis dari exchangerate-api (Base USD)
-            $response = Http::get('https://api.exchangerate-api.com/v4/latest/USD');
+            // Tambahkan withoutVerifying() untuk mem-bypass error SSL di localhost Windows
+            $response = Http::withoutVerifying()->get('https://api.exchangerate-api.com/v4/latest/USD');
             
             if ($response->successful()) {
                 $rates = $response->json()['rates'];
@@ -478,12 +478,14 @@ class TransactionController extends Controller
                     'MYR' => number_format($idr / $rates['MYR'], 0, ',', '.'),
                 ];
             } else {
-                // Lempar error agar ditangkap oleh catch jika API sedang down
-                throw new \Exception('Gagal mengambil data API');
+                throw new \Exception('Gagal mengambil data API: Status bukan 200');
             }
 
         } catch (\Exception $e) {
-            // FALLBACK: Jika tidak ada internet atau API error, tampilkan data statis ini
+            // Jika mau melihat pesan error aslinya (untuk testing), kamu bisa buka komentar di bawah ini:
+            // dd($e->getMessage()); 
+
+            // FALLBACK: Jika API error, tampilkan data statis ini
             $conversions = [
                 'USD' => '15.600',
                 'EUR' => '16.900',
@@ -494,9 +496,6 @@ class TransactionController extends Controller
             ];
         }
 
-        // Pastikan nama view ini sesuai dengan struktur folder kamu.
-        // Jika file blade-nya ada di resources/views/currency.blade.php maka gunakan 'currency'
-        // Jika ada di dalam folder wallet (resources/views/wallet/currency.blade.php) gunakan 'wallet.currency'
-        return view('features.currency', compact('conversions'));
+        return view('features.currency', compact('conversions')); 
     }
 }
