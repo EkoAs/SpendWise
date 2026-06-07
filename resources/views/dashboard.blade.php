@@ -53,7 +53,7 @@
         </div>
 
         <!-- KANAN: KONTEN UTAMA -->
-        <div class="w-full md:w-[65%] lg:w-[70%] flex flex-col bg-[#f8fafc]">
+        <di class="w-full md:w-[65%] lg:w-[70%] flex flex-col bg-[#f8fafc]">
             
             <!-- Area Padding Utama -->
             <div class="p-6 md:p-10 space-y-10 flex-1">
@@ -84,7 +84,56 @@
                         <div class="w-14 h-14 bg-gradient-to-tr from-teal-100 to-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-qrcode"></i></div>
                         <span class="text-xs font-bold text-slate-700">QRIS</span>
                     </a>
+
+                    <!-- Kumpulan Menu Fitur Baru SpendWise -->
+                    <!-- <div class="grid grid-cols-4 gap-4 mt-4"> -->
+                        
+                        <!-- 1. Tombol Pinjam -->
+                        <a href="{{ route('view.loan') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(245,158,11,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-amber-100 to-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Pinjam</span>
+                        </a>
+
+                        <!-- 2. Tombol Asuransi -->
+                        <a href="{{ route('view.insurance') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(59,130,246,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-blue-100 to-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-shield-heart"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Asuransi</span>
+                        </a>
+
+                        <!-- 3. Tombol BPJS -->
+                        <a href="{{ route('view.bpjs') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(16,185,129,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-emerald-100 to-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-kit-medical"></i></div>
+                            <span class="text-xs font-bold text-slate-700">BPJS</span>
+                        </a>
+
+                        <!-- 4. Tombol Transfer Bank -->
+                        <a href="{{ route('view.transfer.bank') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(99,102,241,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-indigo-100 to-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-building-columns"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Bank</span>
+                        </a>
+
+                        <!-- 5. Tombol Transfer E-Wallet -->
+                        <a href="{{ route('view.transfer.ewallet') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(168,85,247,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-purple-100 to-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
+                            <span class="text-xs font-bold text-slate-700">E-Wallet</span>
+                        </a>
+
+                        <!-- 6. Tombol Tarik Tunai -->
+                        <a href="{{ route('view.withdraw') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(244,63,94,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-rose-100 to-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Tarik Tunai</span>
+                        </a>
+
+                        <!-- 7. Tombol Konversi Valas -->
+                        <a href="{{ route('wallet.currency') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(14,165,233,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
+                            <div class="w-14 h-14 bg-gradient-to-tr from-sky-100 to-sky-50 text-sky-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-globe"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Valas</span>
+                        </a>
+
+                    <!-- </div> -->
                 </div>
+            </div>
+                
 
                 <!-- RIWAYAT TRANSAKSI -->
                 <div>

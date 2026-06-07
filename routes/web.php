@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 
+
 // Halaman Utama (nanti diarahkan ke dashboard jika sudah login)
 Route::get('/', function () {
     return redirect()->route('login');
@@ -72,4 +73,29 @@ Route::post('/budget', [DashboardController::class, 'storeBudget'])->name('budge
 
 // CRUD Anggaran update and del
 Route::put('/budget/{id}', [DashboardController::class, 'updateBudget'])->name('budget.update');
-    Route::delete('/budget/{id}', [DashboardController::class, 'destroyBudget'])->name('budget.destroy');
+Route::delete('/budget/{id}', [DashboardController::class, 'destroyBudget'])->name('budget.destroy');
+
+
+// ==========================================
+// 1. ROUTE GET (Untuk membuka halaman fitur dari tombol Dashboard)
+// ==========================================
+Route::get('/feature/loan', function() { return view('features.loan'); })->name('view.loan');
+Route::get('/feature/insurance', function() { return view('features.insurance'); })->name('view.insurance');
+Route::get('/feature/bpjs', function() { return view('features.bpjs'); })->name('view.bpjs');
+Route::get('/feature/transfer-bank', function() { return view('features.transfer_bank'); })->name('view.transfer.bank');
+Route::get('/feature/transfer-ewallet', function() { return view('features.transfer_ewallet'); })->name('view.transfer.ewallet');
+Route::get('/feature/withdraw', function() { return view('features.withdraw'); })->name('view.withdraw');
+
+// ==========================================
+// 2. ROUTE POST (Untuk aksi memotong saldo & menjalankan Controller)
+// ==========================================
+Route::post('/wallet/loan/borrow', [TransactionController::class, 'borrowLoan'])->name('wallet.loan.borrow');
+Route::post('/wallet/loan/pay', [TransactionController::class, 'payLoan'])->name('wallet.loan.pay');
+Route::post('/wallet/insurance', [TransactionController::class, 'payInsurance'])->name('wallet.insurance');
+Route::post('/wallet/bpjs', [TransactionController::class, 'payBPJS'])->name('wallet.bpjs');
+Route::post('/wallet/transfer/bank', [TransactionController::class, 'transferBank'])->name('wallet.transfer.bank');
+Route::post('/wallet/transfer/ewallet', [TransactionController::class, 'transferEwallet'])->name('wallet.transfer.ewallet');
+Route::post('/wallet/withdraw', [TransactionController::class, 'withdrawCash'])->name('wallet.withdraw');
+
+// Route GET Khusus API Mata Uang (Karena ini hanya mengambil data)
+Route::get('/wallet/currency', [TransactionController::class, 'getCurrencyRates'])->name('wallet.currency');
