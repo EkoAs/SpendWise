@@ -82,7 +82,7 @@
                     </a>
                     <a href="{{ route('qris') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(20,184,166,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
                         <div class="w-14 h-14 bg-gradient-to-tr from-teal-100 to-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-qrcode"></i></div>
-                        <span class="text-xs font-bold text-slate-700">QRIS</span>
+                        <span class="text-xs font-bold text-slate-700">WiseQris</span>
                     </a>
 
                     <!-- Kumpulan Menu Fitur Baru SpendWise -->
@@ -91,7 +91,7 @@
                         <!-- 1. Tombol Pinjam -->
                         <a href="{{ route('view.loan') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(245,158,11,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
                             <div class="w-14 h-14 bg-gradient-to-tr from-amber-100 to-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Pinjam</span>
+                            <span class="text-xs font-bold text-slate-700">WisePinjam</span>
                         </a>
 
                         <!-- 2. Tombol Asuransi -->
