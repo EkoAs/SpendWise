@@ -214,8 +214,9 @@
                             <canvas id="pieChart"></canvas>
                         </div>
                     </div>
-                    <form action="{{ route('budget.update', $budget->id) }}" method="POST" class="flex gap-2 items-center">
-                            <div class="mt-8">
+                </div>
+
+                <div class="mt-8">
                     <h3 class="text-xl font-extrabold text-slate-800 mb-5 flex items-center gap-2">
                         <i class="fa-solid fa-sliders text-blue-500"></i> Kelola Anggaran Saat Ini
                     </h3>
@@ -239,7 +240,7 @@
                                         </form>
                                     </div>
                                 </div>
-                                <!-- Form Update Limit Anggaran -->
+
                                 <form action="{{ route('budget.update', $budget->id) }}" method="POST" style="display: grid; grid-template-columns: 1fr 85px; gap: 8px; width: 100%; box-sizing: border-box; clear: both; margin-top: 15px; padding: 0;">
                                     @csrf
                                     @method('PUT')
@@ -265,8 +266,6 @@
                         @endforelse
                     </div>
                 </div>
-                </div>
-
             </div> <!-- End Padding Container -->
 
             <!-- FOOTER -->
