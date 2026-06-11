@@ -4,86 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi OTP - SpendWise</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        
-        /* Menghilangkan arrow pada input number (Chrome, Safari, Edge, Opera) */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* Menghilangkan arrow pada input number (Firefox) */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="{{ asset('css/verify.css') }}">
 </head>
-<body class="bg-slate-950 min-h-screen flex items-center justify-center relative overflow-hidden p-4">
+<body class="verify-body">
 
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div class="absolute top-[10%] left-[20%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob"></div>
-        <div class="absolute bottom-[10%] right-[20%] w-96 h-96 bg-emerald-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="verify-bg-container">
+        <div class="verify-orb orb-top-left"></div>
+        <div class="verify-orb orb-bottom-right"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-md bg-slate-900/80 backdrop-blur-2xl border border-slate-700/50 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden p-10">
+    <div class="verify-card">
         
-        <div class="flex justify-center mb-8">
-            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(37,99,235,0.4)] transform rotate-3">
-                <svg class="w-8 h-8 text-white transform -rotate-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="verify-icon-wrapper">
+            <div class="verify-icon-bg">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                 </svg>
             </div>
         </div>
 
-        <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-white mb-2">Verifikasi Keamanan</h2>
-            <p class="text-slate-400 text-sm leading-relaxed">
+        <div class="verify-header">
+            <h2>Verifikasi Keamanan</h2>
+            <p>
                 Masukkan 6 digit kode OTP yang telah kami kirimkan ke perangkat Anda. <br>
-                <span class="text-emerald-400 font-semibold">(Dummy: 000000)</span>
+                <span class="text-emerald">(Dummy: 000000)</span>
             </p>
         </div>
         
         @if($errors->any())
-            <div class="bg-rose-500/10 border border-rose-500/50 text-rose-400 p-4 rounded-xl mb-6 text-sm flex items-center justify-center gap-2">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div class="verify-error">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span>{{ $errors->first() }}</span>
             </div>
         @endif
 
-        <form action="{{ route('verify.process') }}" method="POST" id="otp-form" class="space-y-8">
+        <form action="{{ route('verify.process') }}" method="POST" id="otp-form" class="verify-form">
             @csrf
             
             <input type="hidden" name="code" id="actual-otp-code" required>
             
-            <div class="flex justify-between gap-2 sm:gap-3" id="otp-container">
-                <input type="number" class="otp-input w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-slate-950/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-inner" maxlength="1" autofocus>
-                <input type="number" class="otp-input w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-slate-950/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-inner" maxlength="1">
-                <input type="number" class="otp-input w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-slate-950/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-inner" maxlength="1">
-                <input type="number" class="otp-input w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-slate-950/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-inner" maxlength="1">
-                <input type="number" class="otp-input w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-slate-950/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-inner" maxlength="1">
-                <input type="number" class="otp-input w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-slate-950/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all shadow-inner" maxlength="1">
+            <div class="otp-container" id="otp-container">
+                <input type="number" class="otp-input" maxlength="1" autofocus>
+                <input type="number" class="otp-input" maxlength="1">
+                <input type="number" class="otp-input" maxlength="1">
+                <input type="number" class="otp-input" maxlength="1">
+                <input type="number" class="otp-input" maxlength="1">
+                <input type="number" class="otp-input" maxlength="1">
             </div>
 
-            <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold py-4 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-200">
+            <button type="submit" class="btn-verify">
                 Verifikasi Sekarang
             </button>
         </form>
 
-        <div class="mt-8 text-center">
-            <p class="text-sm text-slate-400">
-                Belum menerima kode? <br class="sm:hidden">
-                <button type="button" id="resend-btn" class="font-bold text-slate-500 cursor-not-allowed transition-colors ml-1" disabled>
+        <div class="verify-footer">
+            <p>
+                Belum menerima kode? <br class="br-mobile-only">
+                <button type="button" id="resend-btn" class="btn-resend disabled" disabled>
                     Kirim Ulang <span id="timer-text">(60s)</span>
                 </button>
             </p>
@@ -156,18 +136,16 @@
                     timerText.textContent = '';
                     resendBtn.disabled = false;
                     
-                    // Ubah gaya tombol menjadi aktif
-                    resendBtn.classList.remove('text-slate-500', 'cursor-not-allowed');
-                    resendBtn.classList.add('text-blue-400', 'hover:text-blue-300', 'hover:underline');
+                    // PENGGANTIAN CLASS: Ubah gaya tombol menjadi aktif menggunakan class verify.css
+                    resendBtn.classList.remove('disabled');
+                    resendBtn.classList.add('active');
                 }
             }, 1000);
 
-            // Aksi saat tombol resend diklik (Bisa disambungkan dengan AJAX ke backend nantinya)
+            // Aksi saat tombol resend diklik
             resendBtn.addEventListener('click', () => {
                 if(!resendBtn.disabled) {
                     alert('Kode OTP Dummy (000000) telah dikirim ulang!');
-                    // Reset Timer (Opsional)
-                    // window.location.reload(); 
                 }
             });
         });

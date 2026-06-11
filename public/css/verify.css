@@ -1,0 +1,277 @@
+/* ==========================================================
+   RESET & GLOBAL
+========================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.verify-body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #020617; /* slate-950 */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+/* ==========================================================
+   ANIMATIONS & UTILITIES
+========================================================== */
+@keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+
+/* Menghilangkan arrow pada input number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* ==========================================================
+   BACKGROUND ORBS
+========================================================== */
+.verify-bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.verify-orb {
+    position: absolute;
+    width: 24rem; /* 384px */
+    height: 24rem;
+    border-radius: 50%;
+    mix-blend-mode: multiply;
+    filter: blur(128px);
+    animation: blob 7s infinite;
+}
+
+.orb-top-left {
+    top: 10%;
+    left: 20%;
+    background-color: #2563eb; /* blue-600 */
+    opacity: 0.4;
+}
+
+.orb-bottom-right {
+    bottom: 10%;
+    right: 20%;
+    background-color: #059669; /* emerald-600 */
+    opacity: 0.3;
+    animation-delay: 2s;
+}
+
+/* ==========================================================
+   MAIN CARD (OTP)
+========================================================== */
+.verify-card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 28rem; /* 448px */
+    background: rgba(15, 23, 42, 0.8); /* slate-900/80 */
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700/50 */
+    border-radius: 1.5rem; /* 24px */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    padding: 2.5rem; /* 40px */
+}
+
+/* ==========================================================
+   CARD CONTENT (ICON & TEXT)
+========================================================== */
+.verify-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.verify-icon-bg {
+    width: 4rem;
+    height: 4rem;
+    background: linear-gradient(to bottom right, #3b82f6, #4f46e5);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.4);
+    transform: rotate(3deg);
+}
+
+.verify-icon-bg svg {
+    width: 2rem;
+    height: 2rem;
+    color: white;
+    transform: rotate(-3deg);
+}
+
+.verify-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.verify-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.verify-header p {
+    color: #94a3b8; /* slate-400 */
+    font-size: 0.875rem;
+    line-height: 1.625;
+}
+
+.text-emerald {
+    color: #34d399; /* emerald-400 */
+    font-weight: 600;
+}
+
+/* ==========================================================
+   ERROR ALERT
+========================================================== */
+.verify-error {
+    background-color: rgba(244, 63, 94, 0.1);
+    border: 1px solid rgba(244, 63, 94, 0.5);
+    color: #fb7185; /* rose-400 */
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.verify-error svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* ==========================================================
+   FORM & OTP INPUTS
+========================================================== */
+.verify-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.otp-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .otp-container { gap: 0.75rem; }
+}
+
+.otp-input {
+    width: 3rem; /* 48px */
+    height: 3.5rem; /* 56px */
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgba(2, 6, 23, 0.5); /* slate-950/50 */
+    border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700/50 */
+    border-radius: 0.75rem; /* 12px */
+    color: white;
+    transition: all 0.2s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+    .otp-input {
+        width: 3.5rem; /* 56px */
+        height: 4rem; /* 64px */
+    }
+}
+
+.otp-input:focus {
+    outline: none;
+    border-color: #3b82f6; /* blue-500 */
+    box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* ==========================================================
+   BUTTON & FOOTER
+========================================================== */
+.btn-verify {
+    width: 100%;
+    background: linear-gradient(to right, #10b981, #0d9488); /* emerald to teal */
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    transition: all 0.2s;
+}
+
+.btn-verify:hover {
+    background: linear-gradient(to right, #34d399, #14b8a6);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+    transform: translateY(-2px);
+}
+
+.verify-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #94a3b8; /* slate-400 */
+}
+
+/* State untuk tombol kirim ulang */
+.btn-resend {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.875rem;
+    background: none;
+    border: none;
+    margin-left: 0.25rem;
+    transition: all 0.2s;
+}
+
+.btn-resend.disabled {
+    color: #64748b; /* slate-500 */
+    cursor: not-allowed;
+}
+
+.btn-resend.active {
+    color: #60a5fa; /* blue-400 */
+    cursor: pointer;
+}
+
+.btn-resend.active:hover {
+    color: #93c5fd; /* blue-300 */
+    text-decoration: underline;
+}
+
+@media (min-width: 640px) {
+    .br-mobile-only { display: none; }
+}
