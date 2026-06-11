@@ -15,7 +15,7 @@
 <!-- Wrapper Utama dengan background abu-abu kebiruan yang sangat soft -->
     <nav class="dash-navbar">
 
-    
+
     <div class="dash-brand">
     <div class="brand-icon">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -179,6 +179,7 @@
             </div>
         </section>
 
+        
         <section class="dash-section">
             <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Log Transaksi Terbaru</h3>
             <div class="transaction-list">
