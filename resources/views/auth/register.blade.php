@@ -20,14 +20,14 @@
         
         <div class="auth-brand-section">
             
-            <div class="brand-logo">
-                <div class="logo-icon">
+            <a href="{{ route('dashboard') }}" class="nav-brand">
+                <div class="logo-icon-dash">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
-                <span class="brand-text">Spend<span>Wise</span></span>
-            </div>
+                <span class="brand-name">SpendWise</span>
+            </a>
 
             <div class="brand-hero">
                 <h1>Kendalikan Uangmu, <br><span class="text-gradient">Tanpa Batas.</span></h1>

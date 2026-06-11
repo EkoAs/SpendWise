@@ -4,278 +4,329 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - SpendWise</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+    
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    </head>
+<body>
 <!-- Wrapper Utama dengan background abu-abu kebiruan yang sangat soft -->
-    <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row min-h-screen bg-slate-50 font-sans selection:bg-blue-500 selection:text-white">
+    <nav class="dash-navbar">
 
-        <!-- KIRI: PANEL SALDO (Gradient & Glassmorphism Blur) -->
-        <div class="w-full md:w-[35%] lg:w-[30%] bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white p-8 md:p-12 flex flex-col justify-center min-h-[40vh] md:h-screen md:sticky md:top-0 relative overflow-hidden shadow-[4px_0_24px_rgba(0,0,0,0.1)] z-10">
-            
-            <!-- Efek Blur Cahaya di Belakang (Modern UI) -->
-            <div class="absolute top-[-10%] left-[-10%] w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-[80px] opacity-60"></div>
-            <div class="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-purple-600 rounded-full mix-blend-screen filter blur-[80px] opacity-60"></div>
+    
+    <div class="dash-brand">
+    <div class="brand-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+    </div>
+    <div class="brand-text">Spend<span>Wise</span></div>
+</div>
 
-            <div class="relative z-20">
-                <div class="inline-block bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-6 shadow-sm">
-                    <h1 class="text-sm font-medium tracking-wide">👋 Hai, <span class="font-bold text-white">{{ $user->name }}</span>!</h1>
-                </div>
-                
-                <p class="text-indigo-200 text-sm font-medium tracking-wider uppercase mb-2">Total Saldo Aktif</p>
-                
-                <div class="flex items-center space-x-4 mb-8">
-                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-lg" id="balanceText" data-balance="Rp {{ number_format($user->balance, 0, ',', '.') }}">
-                        Rp {{ number_format($user->balance, 0, ',', '.') }}
-                    </h2>
-                    <button onclick="toggleBalance()" class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10 rounded-full transition-all focus:outline-none shadow-md hover:scale-110">
-                        <i class="fa-solid fa-eye text-indigo-100" id="eyeIcon"></i>
-                    </button>
-                </div>
 
-                <!-- MATA UANG: Dibuat seperti kartu kaca melayang (Glass Card) -->
-                <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-2xl flex justify-between items-center text-xs font-bold text-white shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
-                    <span class="flex flex-col items-center gap-1.5 w-1/3 border-r border-white/10">
-                        <img src="https://flagcdn.com/w20/us.png" alt="USD" class="w-5 h-3.5 rounded-sm shadow-sm ring-1 ring-white/30">
-                        <span id="usd-val" class="tracking-wide text-indigo-100">Memuat...</span>
-                    </span>
-                    <span class="flex flex-col items-center gap-1.5 w-1/3 border-r border-white/10">
-                        <img src="https://flagcdn.com/w20/eu.png" alt="EUR" class="w-5 h-3.5 rounded-sm shadow-sm ring-1 ring-white/30">
-                        <span id="eur-val" class="tracking-wide text-indigo-100">Memuat...</span>
-                    </span>
-                    <span class="flex flex-col items-center gap-1.5 w-1/3">
-                        <img src="https://flagcdn.com/w20/sg.png" alt="SGD" class="w-5 h-3.5 rounded-sm shadow-sm ring-1 ring-white/30">
-                        <span id="sgd-val" class="tracking-wide text-indigo-100">Memuat...</span>
-                    </span>
-                </div>
-            </div>
+    <div class="dash-nav-actions">
+        <div class="notif-btn">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-badge">5</span>
+        </div>
+        <div class="user-avatar">
+            {{ substr($user->name, 0, 1) }}
+        </div>
+    </div>
+</nav>
+
+<div class="dash-wrapper">
+    
+    <aside class="dash-left-panel">
+        <div class="money-bg-animation">
+            <div class="money-blob blob-1"></div>
+            <div class="money-blob blob-2"></div>
+            <div class="money-blob blob-3"></div>
         </div>
 
-        <!-- KANAN: KONTEN UTAMA -->
-        <di class="w-full md:w-[65%] lg:w-[70%] flex flex-col bg-[#f8fafc]">
+        <div class="panel-content">
+            <div class="welcome-badge">
+                👋 Hai, <span>{{ $user->name }}</span>!
+            </div>
             
-            <!-- Area Padding Utama -->
-            <div class="p-6 md:p-10 space-y-10 flex-1">
-                
-                <!-- MENU NAVIGASI: Bentuk floating card -->
-                <div class="grid grid-cols-3 lg:grid-cols-6 gap-4">
-                    <a href="{{ route('transfer') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(59,130,246,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                        <div class="w-14 h-14 bg-gradient-to-tr from-blue-100 to-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                        <span class="text-xs font-bold text-slate-700">Transfer</span>
-                    </a>
-                    <a href="{{ route('va') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(16,185,129,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                        <div class="w-14 h-14 bg-gradient-to-tr from-emerald-100 to-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-building-columns"></i></div>
-                        <span class="text-xs font-bold text-slate-700">Bayar VA</span>
-                    </a>
-                    <a href="{{ route('topup') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(249,115,22,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                        <div class="w-14 h-14 bg-gradient-to-tr from-orange-100 to-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
-                        <span class="text-xs font-bold text-slate-700">Top Up</span>
-                    </a>
-                    <a href="{{ route('bill') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(225,29,72,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                        <div class="w-14 h-14 bg-gradient-to-tr from-rose-100 to-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                        <span class="text-xs font-bold text-slate-700">Tagihan</span>
-                    </a>
-                    <a href="{{ route('netmarket') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(168,85,247,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                        <div class="w-14 h-14 bg-gradient-to-tr from-purple-100 to-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wifi"></i></div>
-                        <span class="text-xs font-bold text-slate-700">NetMarket</span>
-                    </a>
-                    <a href="{{ route('qris') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(20,184,166,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                        <div class="w-14 h-14 bg-gradient-to-tr from-teal-100 to-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-qrcode"></i></div>
-                        <span class="text-xs font-bold text-slate-700">WiseQris</span>
-                    </a>
+            <p class="balance-label">Total Saldo Aktif</p>
+            
+            <div class="balance-wrapper">
+                <h2 class="balance-amount" id="balanceText" data-balance="Rp {{ number_format($user->balance, 0, ',', '.') }}">
+                    Rp {{ number_format($user->balance, 0, ',', '.') }}
+                </h2>
+                <button onclick="toggleBalance()" class="btn-eye" id="eyeBtn">
+                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                </button>
+            </div>
 
-                    <!-- Kumpulan Menu Fitur Baru SpendWise -->
-                    <!-- <div class="grid grid-cols-4 gap-4 mt-4"> -->
-                        
-                        <!-- 1. Tombol Pinjam -->
-                        <a href="{{ route('view.loan') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(245,158,11,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-amber-100 to-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                            <span class="text-xs font-bold text-slate-700">WisePinjam</span>
-                        </a>
-
-                        <!-- 2. Tombol Asuransi -->
-                        <a href="{{ route('view.insurance') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(59,130,246,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-blue-100 to-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-shield-heart"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Asuransi</span>
-                        </a>
-
-                        <!-- 3. Tombol BPJS -->
-                        <a href="{{ route('view.bpjs') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(16,185,129,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-emerald-100 to-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-kit-medical"></i></div>
-                            <span class="text-xs font-bold text-slate-700">BPJS</span>
-                        </a>
-
-                        <!-- 4. Tombol Transfer Bank -->
-                        <a href="{{ route('view.transfer.bank') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(99,102,241,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-indigo-100 to-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-building-columns"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Bank</span>
-                        </a>
-
-                        <!-- 5. Tombol Transfer E-Wallet -->
-                        <a href="{{ route('view.transfer.ewallet') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(168,85,247,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-purple-100 to-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
-                            <span class="text-xs font-bold text-slate-700">E-Wallet</span>
-                        </a>
-
-                        <!-- 6. Tombol Tarik Tunai -->
-                        <a href="{{ route('view.withdraw') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(244,63,94,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-rose-100 to-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Tarik Tunai</span>
-                        </a>
-
-                        <!-- 7. Tombol Konversi Valas -->
-                        <a href="{{ route('wallet.currency') }}" class="group flex flex-col items-center justify-center p-4 bg-white rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(14,165,233,0.15)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-100">
-                            <div class="w-14 h-14 bg-gradient-to-tr from-sky-100 to-sky-50 text-sky-500 rounded-2xl flex items-center justify-center mb-3 text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-globe"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Valas</span>
-                        </a>
-
-                    <!-- </div> -->
+            <div class="currency-card">
+                <div class="currency-item">
+                    <img src="https://flagcdn.com/w20/us.png" alt="USD">
+                    <span id="usd-val">Memuat...</span>
+                </div>
+                <div class="currency-item">
+                    <img src="https://flagcdn.com/w20/eu.png" alt="EUR">
+                    <span id="eur-val">Memuat...</span>
+                </div>
+                <div class="currency-item no-border">
+                    <img src="https://flagcdn.com/w20/sg.png" alt="SGD">
+                    <span id="sgd-val">Memuat...</span>
                 </div>
             </div>
+            
+        </div>
+    </aside>
+
+    <main class="dash-right-panel">
+        
+        <section class="dash-section">
+            <div class="menu-grid">
                 
+                <a href="{{ route('transfer') }}" class="menu-card color-blue">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+                    <span>Transfer</span>
+                </a>
 
-                <!-- RIWAYAT TRANSAKSI -->
-                <div>
-                    <h3 class="text-xl font-extrabold text-slate-800 mb-5 flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left text-blue-500"></i> Log Transaksi Terbaru
-                    </h3>
-                    <div class="space-y-3">
-                        @forelse($transactions as $trx)
-                            @php
-                                $isIncome = $trx->type === 'topup';
-                                $color = $isIncome ? 'green' : 'red';
-                                $sign = $isIncome ? '+' : '-';
-                            @endphp
+                <a href="{{ route('va') }}" class="menu-card color-emerald">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <span>Bayar VA</span>
+                </a>
 
-                            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 border-l-4 border-l-{{ $color }}-500 flex justify-between items-center hover:shadow-md transition-shadow">
-                                <div>
-                                    <p class="font-bold text-sm text-slate-700 capitalize">{{ $trx->description }}</p>
-                                    <p class="text-xs text-slate-400 mt-0.5 font-medium">{{ $trx->created_at->format('d M Y, H:i') }}</p>
-                                </div>
-                                <span class="text-{{ $color }}-600 font-extrabold text-sm bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
-                                    {{ $sign }} Rp {{ number_format($trx->amount, 0, ',', '.') }}
-                                </span>
+                <a href="{{ route('topup') }}" class="menu-card color-orange">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <span>Top Up</span>
+                </a>
+
+                <a href="{{ route('bill') }}" class="menu-card color-rose">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <span>Tagihan</span>
+                </a>
+
+                <a href="{{ route('netmarket') }}" class="menu-card color-purple">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <span>NetMarket</span>
+                </a>
+
+                <a href="{{ route('qris') }}" class="menu-card color-teal">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <span>WiseQris</span>
+                </a>
+
+                <a href="{{ route('view.loan') }}" class="menu-card color-amber">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <span>WisePinjam</span>
+                </a>
+
+                <a href="{{ route('view.insurance') }}" class="menu-card color-blue">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <span>Asuransi</span>
+                </a>
+
+                <a href="{{ route('view.bpjs') }}" class="menu-card color-emerald">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-kit-medical"></i>
+                    </div>
+                    <span>BPJS</span>
+                </a>
+
+                <a href="{{ route('view.transfer.bank') }}" class="menu-card color-indigo">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <span>Bank</span>
+                </a>
+
+                <a href="{{ route('view.transfer.ewallet') }}" class="menu-card color-purple">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <span>E-Wallet</span>
+                </a>
+
+                <a href="{{ route('view.withdraw') }}" class="menu-card color-rose">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+                    <span>Tarik Tunai</span>
+                </a>
+
+                <a href="{{ route('wallet.currency') }}" class="menu-card color-sky">
+                    <div class="menu-icon">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <span>Valas</span>
+                </a>
+
+            </div>
+        </section>
+
+        <section class="dash-section">
+            <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Log Transaksi Terbaru</h3>
+            <div class="transaction-list">
+                @forelse($transactions as $trx)
+                    @php
+                        $isIncome = $trx->type === 'topup';
+                        $trxType = $isIncome ? 'income' : 'expense';
+                        $sign = $isIncome ? '+' : '-';
+                    @endphp
+                    <div class="trx-card {{ $trxType }}">
+                        <div class="trx-info">
+                            <div class="trx-icon">
+                                <i class="fa-solid {{ $isIncome ? 'fa-arrow-down' : 'fa-arrow-up' }}"></i>
                             </div>
-                        @empty
-                            <div class="bg-white p-8 rounded-3xl border border-dashed border-slate-300 text-center text-slate-500 text-sm font-medium">
-                                <i class="fa-solid fa-box-open text-3xl text-slate-300 mb-3 block"></i>
-                                Belum ada transaksi bulan ini.
+                            <div>
+                                <p class="trx-desc">{{ $trx->description }}</p>
+                                <p class="trx-date">{{ $trx->created_at->format('d M Y, H:i') }}</p>
                             </div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <!-- FORM INPUT (Anggaran & Manual) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
-                    <!-- Form 1 -->
-                    <div class="bg-white p-6 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 relative overflow-hidden">
-                        <div class="absolute -right-6 -top-6 text-blue-50 opacity-50"><i class="fa-solid fa-folder-plus text-8xl"></i></div>
-                        <h3 class="font-bold text-slate-700 mb-4 text-lg relative z-10"><i class="fa-solid fa-folder-plus text-blue-500 mr-2"></i> Buat Anggaran Baru</h3>
-                        <form action="{{ route('budget.store') }}" method="POST" class="flex flex-col gap-3 relative z-10">
-                            @csrf
-                            <input type="text" name="category" placeholder="Cth: Makan, Kost, Transport..." class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all" required>
-                            <input type="number" name="limit_amount" placeholder="Limit Maksimal (Rp)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all" required>
-                            <button type="submit" class="mt-1 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all">Simpan Anggaran</button>
-                        </form>
-                    </div>
-
-                    <!-- Form 2 -->
-                    <div class="bg-white p-6 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 relative overflow-hidden">
-                        <div class="absolute -right-6 -top-6 text-red-50 opacity-50"><i class="fa-solid fa-pen text-8xl"></i></div>
-                        <h3 class="font-bold text-slate-700 mb-4 text-lg relative z-10"><i class="fa-solid fa-pen text-rose-500 mr-2"></i> Catat Pengeluaran</h3>
-                        <form action="{{ route('expense.store') }}" method="POST" class="flex flex-col gap-3 relative z-10">
-                            @csrf
-                            <select name="budget_id" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-rose-500 focus:bg-white outline-none transition-all cursor-pointer" required>
-                                <option value="" disabled selected>Pilih Kategori Anggaran</option>
-                                @foreach($budgets as $budget)
-                                    <option value="{{ $budget->id }}" class="text-slate-700">{{ $budget->category }} (Sisa: Rp {{ number_format($budget->limit_amount - $budget->spent_amount, 0, ',', '.') }})</option>
-                                @endforeach
-                            </select>
-                            <div class="flex gap-3">
-                                <input type="number" name="amount" placeholder="Nominal (Rp)" class="w-1/2 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-rose-500 focus:bg-white outline-none transition-all" required>
-                                <input type="text" name="description" placeholder="Keterangan" class="w-1/2 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-rose-500 focus:bg-white outline-none transition-all" required>
-                            </div>
-                            <button type="submit" class="mt-1 w-full bg-gradient-to-r from-rose-500 to-red-600 text-white px-4 py-3 rounded-xl text-sm font-bold shadow-lg shadow-rose-500/30 hover:shadow-rose-500/50 hover:-translate-y-0.5 transition-all">Catat ke Grafik</button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- CHART / GRAFIK ==========================-->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100">
-                        <h3 class="font-extrabold text-slate-700 mb-5 text-center text-lg">📊 Pengeluaran vs Limit</h3>
-                        <canvas id="barChart"></canvas>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100">
-                        <h3 class="font-extrabold text-slate-700 mb-5 text-center text-lg">🍩 Distribusi Anggaran</h3>
-                        <div class="w-3/4 mx-auto">
-                            <canvas id="pieChart"></canvas>
+                        </div>
+                        <div class="trx-amount">
+                            {{ $sign }} Rp {{ number_format($trx->amount, 0, ',', '.') }}
                         </div>
                     </div>
+                @empty
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open"></i>
+                        <p>Belum ada transaksi bulan ini.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
+
+        <section class="dash-section grid-2-cols">
+            
+            <div class="glass-panel">
+                <div class="panel-watermark"><i class="fa-solid fa-folder-plus"></i></div>
+                <h3 class="panel-title text-blue"><i class="fa-solid fa-folder-plus"></i> Buat Anggaran Baru</h3>
+                <form action="{{ route('budget.store') }}" method="POST" class="dash-form">
+                    @csrf
+                    <input type="text" name="category" placeholder="Cth: Makan, Kost, Transport..." class="dash-input" required>
+                    <input type="number" name="limit_amount" placeholder="Limit Maksimal (Rp)" class="dash-input" required>
+                    <button type="submit" class="dash-btn btn-blue">Simpan Anggaran</button>
+                </form>
+            </div>
+
+            <div class="glass-panel">
+                <div class="panel-watermark"><i class="fa-solid fa-pen"></i></div>
+                <h3 class="panel-title text-rose"><i class="fa-solid fa-pen"></i> Catat Pengeluaran</h3>
+                <form action="{{ route('expense.store') }}" method="POST" class="dash-form">
+                    @csrf
+                    <select name="budget_id" class="dash-input select-dark" required>
+                        <option value="" disabled selected>Pilih Kategori Anggaran</option>
+                        @foreach($budgets as $budget)
+                            <option value="{{ $budget->id }}">{{ $budget->category }} (Sisa: Rp {{ number_format($budget->limit_amount - $budget->spent_amount, 0, ',', '.') }})</option>
+                        @endforeach
+                    </select>
+                    <div class="form-row">
+                        <input type="number" name="amount" placeholder="Nominal (Rp)" class="dash-input w-half" required>
+                        <input type="text" name="description" placeholder="Keterangan" class="dash-input w-half" required>
+                    </div>
+                    <button type="submit" class="dash-btn btn-rose">Catat ke Grafik</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="dash-section grid-2-cols">
+            <div class="glass-panel text-center">
+                <h3 class="panel-title justify-center">📊 Pengeluaran vs Limit</h3>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
                 </div>
-
-                <div class="mt-8">
-                    <h3 class="text-xl font-extrabold text-slate-800 mb-5 flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-blue-500"></i> Kelola Anggaran Saat Ini
-                    </h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        @forelse($budgets as $budget)
-                            <div class="bg-white p-5 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100" style="display: block; position: relative; box-sizing: border-box; clear: both; min-height: 150px;">
-                                
-                                <div style="display: block; width: 100%; content: ''; clear: both; margin-bottom: 15px; overflow: hidden;">
-                                    <div style="float: left; width: 75%; box-sizing: border-box;">
-                                        <h4 class="font-bold text-slate-700 text-lg" style="margin: 0; padding: 0;">{{ $budget->category }}</h4>
-                                        <p class="text-xs text-slate-400 font-medium" style="margin: 2px 0 0 0; padding: 0;">Terpakai: Rp {{ number_format($budget->spent_amount, 0, ',', '.') }}</p>
-                                    </div>
-                                    <div style="float: right; width: 25%; text-align: right; box-sizing: border-box;">
-                                        <form action="{{ route('budget.destroy', $budget->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori anggaran {{ $budget->category }}? Grafik pengeluaran juga akan ikut hilang.');" style="display: inline-block; margin: 0; padding: 0;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors" style="width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                                                <i class="fa-solid fa-trash text-xs"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <form action="{{ route('budget.update', $budget->id) }}" method="POST" style="display: grid; grid-template-columns: 1fr 85px; gap: 8px; width: 100%; box-sizing: border-box; clear: both; margin-top: 15px; padding: 0;">
-                                    @csrf
-                                    @method('PUT')
-                                    
-                                    <div style="display: grid; grid-template-columns: auto 1fr; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; align-items: center; box-sizing: border-box;">
-                                        <span style="padding: 10px 12px; background-color: #f1f5f9; border-right: 1px solid #e2e8f0; color: #64748b; font-size: 13px; font-weight: bold; user-select: none;">
-                                            Rp
-                                        </span>
-                                        <input type="number" step="any" name="limit_amount" value="{{ $budget->limit_amount }}" required
-                                            style="width: 100%; padding: 10px; background: transparent; border: none; outline: none; color: #334155; font-size: 14px; font-weight: 600; box-sizing: border-box; display: block;">
-                                    </div>
-                                    
-                                    <button type="submit" class="hover:bg-blue-600 hover:text-white transition-colors" style="background-color: #dbeafe; color: #2563eb; border-radius: 12px; font-weight: bold; font-size: 13px; border: none; cursor: pointer; width: 85px; height: 100%; display: block; text-align: center; box-sizing: border-box; margin: 0;">
-                                        Update
-                                    </button>
-                                </form>
-
-                            </div>
-                        @empty
-                            <div class="col-span-full bg-white p-6 rounded-3xl border border-dashed border-slate-300 text-center text-slate-500 text-sm font-medium">
-                                Belum ada anggaran yang dibuat. Buat anggaran pertamamu di atas!
-                            </div>
-                        @endforelse
+            </div>
+            <div class="glass-panel text-center">
+                <h3 class="panel-title justify-center">🍩 Distribusi Anggaran</h3>
+                <div class="chart-container chart-pie">
+                    <div class="chart-wrapper">
+                        <canvas id="pieChart"></canvas>
                     </div>
                 </div>
-            </div> <!-- End Padding Container -->
+            </div>
+        </section>
 
-            <!-- FOOTER -->
-            <footer class="text-slate-400 text-xs text-center py-6 font-medium border-t border-slate-200/60 bg-transparent">
-                <p>&copy; 2026 SpendWise E-Wallet. Coded with ❤️. All rights reserved.</p>
-            </footer>
+        <section class="dash-section mt-8">
+            <h3 class="section-title"><i class="fa-solid fa-sliders"></i> Kelola Anggaran Saat Ini</h3>
+            <div class="budget-grid">
+                @forelse($budgets as $budget)
+                    <div class="budget-card">
+                        <div class="budget-header">
+                            <div>
+                                <h4>{{ $budget->category }}</h4>
+                                <p>Terpakai: Rp {{ number_format($budget->spent_amount, 0, ',', '.') }}</p>
+                            </div>
+                            <form action="{{ route('budget.destroy', $budget->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori anggaran {{ $budget->category }}? Grafik pengeluaran juga akan ikut hilang.');">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn-delete-icon"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        </div>
+                        <form action="{{ route('budget.update', $budget->id) }}" method="POST" class="budget-update-form">
+                            @csrf @method('PUT')
+                            <div class="input-group">
+                                <span class="currency-symbol">Rp</span>
+                                <input type="number" step="any" name="limit_amount" value="{{ $budget->limit_amount }}" required class="dash-input-inline">
+                            </div>
+                            <button type="submit" class="btn-update-small">Update</button>
+                        </form>
+                    </div>
+                @empty
+                    <div class="empty-state full-width">
+                        <i class="fa-solid fa-box-open"></i>
+                        Belum ada anggaran yang dibuat. Buat anggaran pertamamu di atas!
+                    </div>
+                @endforelse
+            </div>
+        </section>
 
-        </div> <!-- End Konten Utama -->
+    </main>
+</div>
+
+<footer class="dash-footer">
+    <div class="footer-content">
+        <p class="footer-copy">&copy; 2026 SpendWise E-Wallet. Secured & Supported By:</p>
+        <div class="sponsor-marquee">
+            <div class="sponsor-logos">
+                <div class="sponsor-item"><i class="fa-brands fa-alipay"></i> Alibaba</div>
+                <div class="sponsor-item"><i class="fa-brands fa-cc-visa"></i> VISA</div>
+                <div class="sponsor-item"><i class="fa-brands fa-cc-mastercard"></i> MasterCard</div>
+                <div class="sponsor-item text-bold">DANA</div>
+                <div class="sponsor-item text-bold italic">OVO</div>
+                <div class="sponsor-item text-bold">GoPay</div>
+                <div class="sponsor-item text-bold">ShopeePay</div>
+                <div class="sponsor-item border-left">Bank Indonesia</div>
+                <div class="sponsor-item">OJK</div>
+                <div class="sponsor-item">LPS</div>
+            </div>
+        </div>
     </div>
+</footer>
 
+<script>
+    // Menyisipkan pengaturan global Chart.js jika script chart.js sudah di-load di atas
+    document.addEventListener('DOMContentLoaded', function() {
+        if(window.Chart) {
+            Chart.defaults.color = '#94a3b8'; // text-slate-400
+            Chart.defaults.borderColor = 'rgba(51, 65, 85, 0.4)'; // grid lines
+            Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+        }
+    });
+</script>
     <script>
         let isHidden = false;
         function toggleBalance() {
