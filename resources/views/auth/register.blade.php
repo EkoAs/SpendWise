@@ -4,38 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - SpendWise</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
-        <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Buat Akun</h2>
-        
-        @if($errors->any())
-            <div class="bg-red-100 text-red-600 p-2 rounded mb-4 text-sm">{{ $errors->first() }}</div>
-        @endif
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 
-        <form action="{{ route('register.process') }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Lengkap</label>
-                <input type="text" name="name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">No. HP</label>
-                <input type="text" name="phone" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">No. KTP (Dummy)</label>
-                <input type="text" name="ktp" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Set PIN (6 Digit)</label>
-                <input type="password" name="pin" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" maxlength="6" required>
-            </div>
-            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Register Now</button>
-        </form>
-        
-        <p class="text-center text-sm text-gray-600 mt-4">Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline">Login</a></p>
+</head>
+<body class="auth-body">
+
+    <div class="bg-orbs-container">
+        <div class="orb orb-blue"></div>
+        <div class="orb orb-indigo"></div>
+        <div class="orb orb-emerald"></div>
     </div>
+
+    <div class="auth-card">
+        
+        <div class="auth-brand-section">
+            
+            <div class="brand-logo">
+                <div class="logo-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <span class="brand-text">Spend<span>Wise</span></span>
+            </div>
+
+            <div class="brand-hero">
+                <h1>Kendalikan Uangmu, <br><span class="text-gradient">Tanpa Batas.</span></h1>
+                <p>Bergabung dengan jutaan pengguna lainnya. Nikmati bebas biaya admin, transfer instan, dan pantau pengeluaran dengan cerdas.</p>
+            </div>
+
+            <div class="brand-sponsors">
+                <p class="sponsor-title">Berlisensi & Diawasi Oleh</p>
+                <div class="sponsor-logos main-sponsors">
+                    <div class="ojk-logo">
+                        <div class="circle-icon"><div class="dot"></div></div>
+                        <span>OJK</span>
+                    </div>
+                    <div class="bi-logo"><span>B I</span></div>
+                    <div class="lps-logo"><span>LPS</span></div>
+                </div>
+
+                <p class="sponsor-title mt-4">Mitra Jaringan</p>
+                <div class="sponsor-logos network-sponsors">
+                    <span class="visa">VISA</span>
+                    <span class="mastercard">mastercard</span>
+                    <span class="gpn">GPN</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-form-section">
+            
+            <div class="form-header">
+                <h2>Buat Akun Baru</h2>
+                <p>Lengkapi data diri di bawah ini untuk memulai.</p>
+            </div>
+            
+            @if($errors->any())
+                <div class="error-alert">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{{ $errors->first() }}</span>
+                </div>
+            @endif
+
+            <form action="{{ route('register.process') }}" method="POST" class="auth-form">
+                @csrf
+                
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" name="name" placeholder="Sesuai KTP" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No. Handphone</label>
+                        <input type="text" name="phone" placeholder="0812xxxxxx" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>No. KTP</label>
+                        <input type="text" name="ktp" placeholder="16 Digit NIK" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-hint">
+                        <label>Set PIN Keamanan</label>
+                        <span class="hint">Wajib 6 Angka</span>
+                    </div>
+                    <input type="password" name="pin" maxlength="6" placeholder="••••••" class="pin-input" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Daftar Sekarang</button>
+            </form>
+            
+            <p class="auth-footer">
+                Sudah memiliki akun? 
+                <a href="{{ route('login') }}">Masuk ke SpendWise</a>
+            </p>
+            
+        </div>
+    </div>
+
 </body>
 </html>
