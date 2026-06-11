@@ -27,9 +27,9 @@
 
 
     <div class="dash-nav-actions">
-        <div class="notif-btn">
+        <div class="notif-btn" style="position: relative; cursor: pointer;">
             <i class="fa-solid fa-bell"></i>
-            <span class="notif-badge">5</span>
+            <span class="notif-badge" id="navNotifBadge" style="display: none;">0</span>
         </div>
         <div class="user-avatar">
             {{ substr($user->name, 0, 1) }}
@@ -179,7 +179,7 @@
             </div>
         </section>
 
-        
+
         <section class="dash-section">
             <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Log Transaksi Terbaru</h3>
             <div class="transaction-list">
@@ -400,5 +400,36 @@
         }
         fetchCurrency();
     </script>
+
+
+    <script> // ambil notif real time untuk navbar
+        function updateNavbarNotification() {
+            // Memanggil route API yang sudah kita daftarkan di web.php
+            fetch("{{ route('api.notif.count') }}")
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('navNotifBadge');
+                    
+                    if (badge) {
+                        if (data.count > 0) {
+                            badge.textContent = data.count;
+                            badge.style.display = 'flex'; // Menampilkan badge jika ada notifikasi
+                        } else {
+                            badge.style.display = 'none';  // Tetap sembunyi jika 0
+                        }
+                    }
+                })
+                .catch(error => console.error('Gagal mengambil data notifikasi:', error));
+        }
+
+        // Jalankan pengecekan begitu halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbarNotification();
+
+            // Polling Real-time: Sistem akan otomatis cek ulang setiap 10 detik
+            setInterval(updateNavbarNotification, 10000);
+        });
+    </script>
+
 </body>
 </html>

@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
     // Fitur Transaksi
     Route::get('/transfer', [TransactionController::class, 'showTransfer'])->name('transfer');
     Route::post('/transfer', [TransactionController::class, 'processTransfer'])->name('transfer.process');
+
+    
+    Route::get('/api/notification-count', [TransactionController::class, 'getNotificationCount'])->name('api.notif.count');
 });
 
 

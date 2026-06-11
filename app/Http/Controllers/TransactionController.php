@@ -498,4 +498,29 @@ class TransactionController extends Controller
 
         return view('features.currency', compact('conversions')); 
     }
-}
+
+
+    // ==========================================
+    // REAL-TIME NOTIFICATION COUNT API
+    // ==========================================
+    // ==========================================
+    // REAL-TIME NOTIFICATION COUNT API (FIXED)
+    // ==========================================
+    // ==========================================
+    // REAL-TIME NOTIFICATION COUNT API (TODAY ONLY)
+    // ==========================================
+    public function getNotificationCount()
+    {
+        try {
+            // Mengambil jumlah notifikasi bawaan Laravel (jika ada)
+            $count = Auth::user()->unreadNotifications->count();
+        } catch (\Exception $e) {
+            // KEMBALI KE HARI INI: Hanya menghitung transaksi yang dibuat sejak jam 00:00 hari ini
+            $count = Transaction::where('user_id', Auth::id())
+                                ->where('created_at', '>=', now()->startOfDay())
+                                ->count();
+        }
+
+        return response()->json(['count' => $count]);
+    }
+} 
