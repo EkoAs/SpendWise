@@ -354,6 +354,7 @@
         const spentData = {!! json_encode($chartSpent) !!};
         const limitData = {!! json_encode($chartLimit) !!};
 
+        // ============================================================================================================
         // Konfigurasi Bar Chart
         new Chart(document.getElementById('barChart'), {
             type: 'bar',
@@ -364,7 +365,20 @@
                     { label: 'Limit (Rp)', data: limitData, backgroundColor: 'rgba(59, 130, 246, 0.3)' }
                 ]
             },
-            options: { responsive: true }
+            options: { 
+                responsive: true,
+                indexAxis: 'y', // 🔥 INI KUNCINYA: Mengubah grafik jadi rebahan (horizontal)
+                maintainAspectRatio: false, // Membantu grafik agar tingginya pas dengan kotak card
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8' } // Opsional: Biar warna teks legend cocok dgn tema dark
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8' } }, // Opsional: Warna teks sumbu X
+                    y: { ticks: { color: '#94a3b8' } }  // Opsional: Warna teks sumbu Y
+                }
+            }
         });
 
         // Konfigurasi Pie Chart
