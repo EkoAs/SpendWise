@@ -457,18 +457,23 @@ class TransactionController extends Controller
         return back()->with('success', 'Silakan ambil uang tunai Anda di kasir/mesin ' . $request->merchant . ' terdekat.');
     }
 
+
+    //=========================================================================================================================
     // konversi nilai mata uangasinh
+
     public function getCurrencyRates()
     {
         try {
-            // Tambahkan withoutVerifying() untuk mem-bypass error SSL di localhost Windows
-            $response = Http::withoutVerifying()->get('https://api.exchangerate-api.com/v4/latest/USD');
+            // Tambahkan timeout(5) agar maksimal loading hanya 5 detik!
+            $response = Http::withoutVerifying()
+                            ->connectTimeout(2)
+                            ->timeout(3)
+                            ->get('https://api.exchangerate-api.com/v4/latest/USD');
             
             if ($response->successful()) {
                 $rates = $response->json()['rates'];
-                $idr = $rates['IDR']; // Nilai 1 USD ke IDR
+                $idr = $rates['IDR']; 
                 
-                // Rumus: (1 USD ke IDR) dibagi (1 USD ke Mata Uang Lain) = Harga 1 Mata Uang Lain ke IDR
                 $conversions = [
                     'USD' => number_format($idr, 0, ',', '.'),
                     'EUR' => number_format($idr / $rates['EUR'], 0, ',', '.'),
@@ -482,10 +487,7 @@ class TransactionController extends Controller
             }
 
         } catch (\Exception $e) {
-            // Jika mau melihat pesan error aslinya (untuk testing), kamu bisa buka komentar di bawah ini:
-            // dd($e->getMessage()); 
-
-            // FALLBACK: Jika API error, tampilkan data statis ini
+            // FALLBACK: Akan langsung tereksekusi jika API lambat lebih dari 5 detik
             $conversions = [
                 'USD' => '15.600',
                 'EUR' => '16.900',
@@ -499,10 +501,12 @@ class TransactionController extends Controller
         return view('features.currency', compact('conversions')); 
     }
 
+    
+    
+    // ===========================================================================================================================
+    // panel notifikasi di dashboard 
+    // total notifikasi hari ini setiap transaksii
 
-    // ==========================================
-    // REAL-TIME NOTIFICATION COUNT API (TODAY ONLY)
-    // ==========================================
     public function getNotificationCount()
     {
         try {
