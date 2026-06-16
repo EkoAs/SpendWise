@@ -119,4 +119,22 @@ class AuthController extends Controller
 
         return back()->withErrors(['phone' => 'No. Handphone tidak ditemukan di sistem kami.']);
     }
+
+
+
+    // logout ============================================================================================
+    public function logout(Request $request)
+    {
+        // Keluarkan user dari sistem
+        Auth::logout();
+
+        // Hancurkan session agar tidak bisa di-back
+        $request->session()->invalidate();
+
+        // Buat token keamanan baru
+        $request->session()->regenerateToken();
+
+        // Arahkan kembali ke halaman register (atau login)
+        return redirect('/register'); 
+    }
 }

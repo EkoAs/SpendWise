@@ -24,7 +24,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/verify', [AuthController::class, 'verify'])->name('verify.process');
 });
 
-// Ubah route dashboard yang lama menjadi ini:
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
@@ -79,9 +79,9 @@ Route::put('/budget/{id}', [DashboardController::class, 'updateBudget'])->name('
 Route::delete('/budget/{id}', [DashboardController::class, 'destroyBudget'])->name('budget.destroy');
 
 
-// ==========================================
+
+// ===========================================================================================================
 // 1. ROUTE GET (Untuk membuka halaman fitur dari tombol Dashboard)
-// ==========================================
 Route::get('/feature/loan', function() { return view('features.loan'); })->name('view.loan');
 Route::get('/feature/insurance', function() { return view('features.insurance'); })->name('view.insurance');
 Route::get('/feature/bpjs', function() { return view('features.bpjs'); })->name('view.bpjs');
@@ -89,9 +89,9 @@ Route::get('/feature/transfer-bank', function() { return view('features.transfer
 Route::get('/feature/transfer-ewallet', function() { return view('features.transfer_ewallet'); })->name('view.transfer.ewallet');
 Route::get('/feature/withdraw', function() { return view('features.withdraw'); })->name('view.withdraw');
 
-// ==========================================
+
+// =============================================================================================
 // 2. ROUTE POST (Untuk aksi memotong saldo & menjalankan Controller)
-// ==========================================
 Route::post('/wallet/loan/borrow', [TransactionController::class, 'borrowLoan'])->name('wallet.loan.borrow');
 Route::post('/wallet/loan/pay', [TransactionController::class, 'payLoan'])->name('wallet.loan.pay');
 Route::post('/wallet/insurance', [TransactionController::class, 'payInsurance'])->name('wallet.insurance');
@@ -107,3 +107,12 @@ Route::get('/wallet/currency', [TransactionController::class, 'getCurrencyRates'
 // liat pin/ lupapin
 Route::get('/lupa-pin', [App\Http\Controllers\AuthController::class, 'showForgotPin'])->name('forgot.pin');
 Route::post('/lupa-pin/verify', [App\Http\Controllers\AuthController::class, 'verifyForgotPin'])->name('forgot.pin.verify');
+
+
+// Menampilkan halaman profil - hanya untuk pengguna yang sudah login
+Route::get('/profile', function () {
+    return view('auth.profile');
+})->middleware('auth');
+
+// Memproses Logout
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');

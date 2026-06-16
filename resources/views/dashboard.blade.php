@@ -31,9 +31,12 @@
             <i class="fa-solid fa-bell"></i>
             <span class="notif-badge" id="navNotifBadge" style="display: none;">0</span>
         </div>
-        <div class="user-avatar">
-            {{ substr($user->name, 0, 1) }}
-        </div>
+        
+        <a href="{{ url('/profile') }}" class="transition-transform hover:scale-105">
+            <div class="user-avatar">
+                {{ substr($user->name, 0, 1) }}
+            </div>
+        </a>
     </div>
 </nav>
 
