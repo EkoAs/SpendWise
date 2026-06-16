@@ -30,7 +30,7 @@
             <h2>Verifikasi Keamanan</h2>
             <p>
                 Masukkan 6 digit kode OTP yang telah kami kirimkan ke perangkat Anda. <br>
-                <span class="text-emerald">(Dummy: 000000)</span>
+                <span class="text-emerald">(KODE: 873610)</span>
             </p>
         </div>
         
@@ -145,7 +145,7 @@
             // Aksi saat tombol resend diklik
             resendBtn.addEventListener('click', () => {
                 if(!resendBtn.disabled) {
-                    alert('Kode OTP Dummy (000000) telah dikirim ulang!');
+                    alert('Kode OTP telah dikirim ulang!');
                 }
             });
         });
