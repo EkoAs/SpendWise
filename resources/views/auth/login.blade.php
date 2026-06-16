@@ -81,7 +81,7 @@
                 <div class="form-group">
                     <div class="label-with-hint">
                         <label>PIN Keamanan</label>
-                        <a href="#" class="hint" style="color: #60a5fa; text-decoration: none; transition: 0.2s;">Lupa PIN?</a>
+                        <a href="{{ route('forgot.pin') }}" class="hint" style="color: #60a5fa; text-decoration: none; transition: 0.2s;">Lupa PIN?</a>
                     </div>
                     <input type="password" name="pin" class="pin-input" maxlength="6" placeholder="******" required>
                 </div>

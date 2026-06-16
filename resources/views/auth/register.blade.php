@@ -20,13 +20,13 @@
         
         <div class="auth-brand-section">
             
-            <a href="{{ route('dashboard') }}" class="nav-brand">
-                <div class="logo-icon-dash">
+            <a href="{{ route('dashboard') }}" class="brand-logo" style="text-decoration: none;">
+                <div class="logo-icon">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
-                <span class="brand-name">SpendWise</span>
+                <span class="brand-text" style="color: white;">Spend<span>Wise</span></span>
             </a>
 
             <div class="brand-hero">

@@ -87,4 +87,36 @@ class AuthController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+
+
+
+    // lupa passwor====================================
+   // ==========================================
+    // FITUR LUPA PIN (PENCARIAN AKUN)
+    // ==========================================
+
+    // 1. Tampilkan Halaman Input No HP
+    public function showForgotPin()
+    {
+        return view('auth.forgot-pin');
+    }
+
+    // 2. Proses Pencarian dan Tampilkan Info Akun
+    public function verifyForgotPin(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required'
+        ]);
+
+        // Cari user berdasarkan HP saja
+        $user = User::where('phone', $request->phone)->first();
+
+        if ($user) {
+            // Jika ketemu, langsung arahkan ke view informasi akun sambil membawa data $user
+            return view('auth.account-info', compact('user')); 
+        }
+
+        return back()->withErrors(['phone' => 'No. Handphone tidak ditemukan di sistem kami.']);
+    }
 }

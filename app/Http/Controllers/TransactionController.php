@@ -501,12 +501,6 @@ class TransactionController extends Controller
 
 
     // ==========================================
-    // REAL-TIME NOTIFICATION COUNT API
-    // ==========================================
-    // ==========================================
-    // REAL-TIME NOTIFICATION COUNT API (FIXED)
-    // ==========================================
-    // ==========================================
     // REAL-TIME NOTIFICATION COUNT API (TODAY ONLY)
     // ==========================================
     public function getNotificationCount()
