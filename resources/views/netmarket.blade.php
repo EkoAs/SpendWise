@@ -11,19 +11,13 @@
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
         }
-        /* Efek fokus form (Purple Glow) */
-        .custom-input:focus, .custom-select:focus {
+        /* Efek fokus form utama (Purple Glow) */
+        .custom-input:focus {
             background-color: rgba(15, 23, 42, 0.9) !important;
             border-color: #a855f7 !important;
             box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.25) !important;
         }
-        /* Menyembunyikan panah bawaan browser untuk Select */
-        .custom-select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-        }
-        /* Animasi sinyal berdenyut lembut untuk ikon */
+        /* Animasi sinyal berdenyut lembut untuk ikon header */
         @keyframes signalPulse {
             0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
@@ -32,9 +26,24 @@
         .signal-animate {
             animation: signalPulse 2s infinite;
         }
+        /* Custom Scrollbar Premium untuk List Paket */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8); 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a855f7; 
+        }
     </style>
 </head>
-<body class="bg-[#020617] text-white min-h-screen flex items-center justify-center relative overflow-x-hidden overflow-y-auto p-4 sm:p-6">
+<body class="bg-[#020617] text-white min-h-screen flex items-center justify-center relative overflow-x-hidden p-4 sm:p-6">
 
     <div class="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
         <div class="absolute w-[250px] h-[250px] md:w-[384px] md:h-[384px] rounded-full mix-blend-multiply filter blur-[80px] md:blur-[128px] top-[-5%] left-[-10%] bg-[#3b82f6] opacity-20"></div>
@@ -42,7 +51,7 @@
         <div class="absolute w-[250px] h-[250px] md:w-[384px] md:h-[384px] rounded-full mix-blend-multiply filter blur-[80px] md:blur-[128px] bottom-[-10%] left-[10%] bg-[#6366f1] opacity-20"></div>
     </div>
 
-    <div class="w-full max-w-md bg-[#0f172a]/70 backdrop-blur-[20px] border border-[#334155]/50 p-6 sm:p-8 rounded-[1.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] z-10 relative">
+    <div class="w-full max-w-md bg-[#0f172a]/70 backdrop-blur-[20px] border border-[#334155]/50 p-6 sm:p-8 rounded-[1.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] z-10 relative my-auto">
         
         <div class="flex items-center justify-between mb-8 pb-4 border-b border-[#334155]/40">
             <div class="flex items-center gap-3">
@@ -71,7 +80,7 @@
             </div> 
         @endif
 
-        <form action="{{ route('netmarket.process') }}" method="POST" class="space-y-4">
+        <form action="{{ route('netmarket.process') }}" method="POST" class="space-y-5">
             @csrf
             
             <div class="space-y-2">
@@ -85,21 +94,43 @@
             </div>
 
             <div class="space-y-2">
-                <label class="block text-[#cbd5e1] text-sm font-semibold">Pilih Paket</label>
-                <div class="relative">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#64748b] z-10">
-                        <i class="fa-solid fa-wifi text-sm"></i>
-                    </span>
-                    <select name="package" id="pkgSelect" class="custom-select w-full pl-11 pr-10 py-3.5 bg-[#020617]/50 border border-[#334155]/70 text-white rounded-xl focus:outline-none transition-all text-sm font-medium cursor-pointer relative z-0" onchange="updatePrice()" required>
-                        <option value="Pulsa 20.000" data-price="21000" class="bg-[#0f172a] text-white">Pulsa 20.000</option>
-                        <option value="Pulsa 50.000" data-price="51000" class="bg-[#0f172a] text-white">Pulsa 50.000</option>
-                        <option value="Kuota 10GB (30 Hari)" data-price="45000" class="bg-[#0f172a] text-white">Kuota 10GB (30 Hari)</option>
-                        <option value="Kuota 25GB (30 Hari)" data-price="85000" class="bg-[#0f172a] text-white">Kuota 25GB (30 Hari)</option>
-                        <option value="Kuota Unlimited (7 Hari)" data-price="35000" class="bg-[#0f172a] text-white">Kuota Unlimited (7 Hari)</option>
-                    </select>
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] pointer-events-none">
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </span>
+                <label class="block text-[#cbd5e1] text-sm font-semibold">Pilihan Paket Premium</label>
+                
+                <input type="hidden" name="package" id="pkgInput" required>
+                
+                <div class="grid grid-cols-2 gap-3 max-h-48 overflow-y-auto custom-scrollbar pr-1 pb-1">
+                    
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Pulsa 10.000" data-price="11500" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Pulsa 10.000</span>
+                    </div>
+                    
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Pulsa 20.000" data-price="21000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Pulsa 20.000</span>
+                    </div>
+
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Pulsa 50.000" data-price="51000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Pulsa 50.000</span>
+                    </div>
+
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Pulsa 100.000" data-price="100000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Pulsa 100.000</span>
+                    </div>
+
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Kuota 5GB (7 Hari)" data-price="25000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Kuota 5GB <span class="text-[9px] text-[#94a3b8] font-normal block">7 Hari</span></span>
+                    </div>
+
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Kuota 10GB (30 Hari)" data-price="45000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Kuota 10GB <span class="text-[9px] text-[#94a3b8] font-normal block">30 Hari</span></span>
+                    </div>
+
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Kuota 25GB (30 Hari)" data-price="85000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Kuota 25GB <span class="text-[9px] text-[#94a3b8] font-normal block">30 Hari</span></span>
+                    </div>
+
+                    <div class="package-card cursor-pointer border border-[#334155]/70 bg-[#020617]/50 hover:bg-[#1e293b]/60 rounded-xl p-3 transition-all duration-200 text-center flex flex-col items-center justify-center gap-1 group" data-value="Kuota Unlimited (30 Hari)" data-price="150000" onclick="selectPackage(this)">
+                        <span class="text-xs font-bold text-white group-hover:text-white transition-colors">Unlimited <span class="text-[9px] text-[#94a3b8] font-normal block">30 Hari</span></span>
+                    </div>
                 </div>
             </div>
 
@@ -109,7 +140,7 @@
                     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#c084fc]">
                         <i class="fa-solid fa-tag text-sm"></i>
                     </span>
-                    <input type="text" id="priceDisplay" value="Rp 21.000" class="w-full pl-11 pr-4 py-3.5 bg-slate-800/40 border border-slate-700/40 text-[#c084fc] font-extrabold rounded-xl cursor-not-allowed text-base shadow-inner" disabled>
+                    <input type="text" id="priceDisplay" class="w-full pl-11 pr-4 py-3.5 bg-slate-800/40 border border-slate-700/40 text-[#c084fc] font-extrabold rounded-xl cursor-not-allowed text-base shadow-inner" disabled>
                 </div>
             </div>
 
@@ -124,19 +155,37 @@
                 </button>
             </div>
         </form>
-
-        <div class="mt-6 pt-4 border-t border-[#334155]/20 flex items-center justify-center gap-2 text-[11px] text-[#64748b] font-medium uppercase tracking-wider">
-            <i class="fa-solid fa-check-circle text-[#a855f7]"></i> Koneksi Provider Langsung
-        </div>
-
     </div>
 
     <script>
-        function updatePrice() {
-            let select = document.getElementById('pkgSelect');
-            let price = select.options[select.selectedIndex].getAttribute('data-price');
-            document.getElementById('priceDisplay').value = 'Rp ' + parseInt(price).toLocaleString('id-ID');
+        // Fungsi ketika tombol paket diklik
+        function selectPackage(element) {
+            // 1. Hapus efek 'Aktif' dari semua tombol
+            let cards = document.querySelectorAll('.package-card');
+            cards.forEach(card => {
+                card.classList.remove('border-[#a855f7]', 'bg-[#a855f7]/20', 'shadow-[0_0_15px_rgba(168,85,247,0.2)]');
+                card.classList.add('border-[#334155]/70', 'bg-[#020617]/50');
+            });
+
+            // 2. Berikan efek 'Aktif' (Glow Ungu) pada tombol yang dipilih
+            element.classList.remove('border-[#334155]/70', 'bg-[#020617]/50');
+            element.classList.add('border-[#a855f7]', 'bg-[#a855f7]/20', 'shadow-[0_0_15px_rgba(168,85,247,0.2)]');
+
+            // 3. Masukkan data ke Hidden Input & Update Harga Display
+            let packageName = element.getAttribute('data-value');
+            let packagePrice = element.getAttribute('data-price');
+            
+            document.getElementById('pkgInput').value = packageName; // Terkirim ke backend sebagai name="package"
+            document.getElementById('priceDisplay').value = 'Rp ' + parseInt(packagePrice).toLocaleString('id-ID');
         }
+
+        // Jalankan pilihan pertama otomatis ketika halaman dimuat
+        document.addEventListener("DOMContentLoaded", () => {
+            let firstPackage = document.querySelector('.package-card');
+            if(firstPackage) {
+                selectPackage(firstPackage);
+            }
+        });
     </script>
 </body>
 </html>
