@@ -6,8 +6,12 @@
     <title>Kurs Mata Uang - SpendWise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Animasi Kustom untuk Ornamen Melayang */
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+        /* Animasi Melayang untuk Ikon Mata Uang */
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(10deg); }
@@ -17,127 +21,151 @@
         .animate-float-delayed { animation: float 8s ease-in-out infinite reverse; }
     </style>
 </head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen relative overflow-x-hidden overflow-y-auto py-10 px-4 font-sans">
+<body class="bg-[#020617] text-white flex flex-col items-center justify-center min-h-screen relative overflow-x-hidden overflow-y-auto py-10 px-4">
 
-    <!-- ================= BACKGROUND DECORATIONS ================= -->
-    
-    <!-- 1. Watermark SpendWise Raksasa -->
+    <!-- ================= BACKGROUND ORBS & FLOATING ICONS ================= -->
     <div class="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
-        <h1 class="text-[12vw] font-black text-slate-200/60 -rotate-12 select-none tracking-tighter">SPENDWISE</h1>
+        <h1 class="text-[12vw] font-black text-[#0f172a]/40 -rotate-12 select-none tracking-tighter">CURRENCY</h1>
     </div>
 
-    <!-- 2. Ornamen Simbol Keuangan Melayang -->
-    <div class="fixed top-[15%] left-[10%] text-7xl opacity-20 blur-[1px] animate-float pointer-events-none z-0 select-none">💲</div>
-    <div class="fixed bottom-[15%] right-[10%] text-8xl opacity-20 blur-[2px] animate-float-delayed pointer-events-none z-0 select-none">💶</div>
-    <div class="fixed top-[60%] left-[5%] text-6xl opacity-20 blur-[1px] animate-float pointer-events-none z-0 select-none">💴</div>
-    <div class="fixed top-[10%] right-[15%] text-7xl opacity-20 blur-[2px] animate-float-delayed pointer-events-none z-0 select-none">💷</div>
+    <!-- Floating Currency Icons (FontAwesome for cleaner dark mode look) -->
+    <div class="fixed top-[15%] left-[10%] text-6xl text-[#334155]/40 blur-[1px] animate-float pointer-events-none z-0 select-none"><i class="fa-solid fa-dollar-sign"></i></div>
+    <div class="fixed bottom-[20%] right-[10%] text-7xl text-[#334155]/30 blur-[2px] animate-float-delayed pointer-events-none z-0 select-none"><i class="fa-solid fa-euro-sign"></i></div>
+    <div class="fixed top-[60%] left-[5%] text-7xl text-[#334155]/40 blur-[1px] animate-float pointer-events-none z-0 select-none"><i class="fa-solid fa-yen-sign"></i></div>
+    <div class="fixed top-[10%] right-[15%] text-6xl text-[#334155]/30 blur-[2px] animate-float-delayed pointer-events-none z-0 select-none"><i class="fa-solid fa-sterling-sign"></i></div>
 
-    <!-- 3. Glow Blur Warna Sky/Blue -->
-    <div class="fixed top-[-10%] left-[-10%] w-96 h-96 bg-sky-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 z-0 pointer-events-none"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 z-0 pointer-events-none"></div>
+    <!-- Glowing Orbs (Sky & Blue) -->
+    <div class="fixed top-[-10%] right-[-10%] w-96 h-96 bg-[#0ea5e9] rounded-full mix-blend-screen filter blur-[120px] opacity-20 z-0 pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-96 h-96 bg-[#3b82f6] rounded-full mix-blend-screen filter blur-[120px] opacity-15 z-0 pointer-events-none"></div>
 
-    <!-- ================= MAIN CONTENT (GLASSMORPHISM) ================= -->
-    
-    <div class="w-full max-w-lg bg-white/60 backdrop-blur-2xl p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/80 z-10 relative">
-        
-        <!-- Tombol Kembali -->
-        <a href="{{ url('/dashboard') }}" class="text-slate-500 hover:text-sky-600 mb-8 inline-block font-bold transition-colors">
-            <i class="fa-solid fa-arrow-left mr-2"></i> Kembali
-        </a>
-        
-        <!-- Header Judul -->
-        <div class="flex items-center gap-4 mb-8 bg-white/60 p-4 rounded-2xl border border-white shadow-sm backdrop-blur-md">
-            <div class="w-14 h-14 bg-gradient-to-br from-sky-400 to-blue-500 text-white rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-sky-500/30">
-                <i class="fa-solid fa-globe"></i>
+    <!-- ================= MAIN CONTAINER ================= -->
+    <div class="w-full max-w-lg z-10 relative space-y-6">
+
+        <!-- Header: Back Button & Logo -->
+        <div class="flex items-center justify-between bg-[#0f172a]/70 backdrop-blur-md border border-[#334155]/50 px-6 py-4 rounded-[1.5rem] shadow-lg">
+            <div class="flex items-center gap-4">
+                <a href="{{ url('/dashboard') }}" class="text-[#94a3b8] hover:text-[#0ea5e9] transition-colors duration-200">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </a>
+                <!-- Logo SpendWise -->
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-[#3b82f6] rounded-full flex items-center justify-center shadow-[0_4px_10px_rgba(59,130,246,0.3)]">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-base font-extrabold tracking-tight text-white">Spend<span class="text-[#3b82f6]">Wise</span></div>
+                </div>
             </div>
-            <div>
-                <h2 class="text-2xl font-extrabold text-slate-800">Kurs Mata Uang</h2>
-                <p class="text-sm text-sky-600 font-semibold mt-0.5 flex items-center gap-1">
-                    <i class="fa-solid fa-satellite-dish text-xs animate-pulse"></i> Update Real-time
+            <!-- Badge Live -->
+            <div class="flex items-center gap-1.5 bg-[#0ea5e9]/10 border border-[#0ea5e9]/30 px-3 py-1.5 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse"></span>
+                <span class="text-[10px] font-extrabold text-[#38bdf8] uppercase tracking-wider">LIVE KURS</span>
+            </div>
+        </div>
+
+        <!-- Card Container -->
+        <div class="bg-[#0f172a]/70 backdrop-blur-[20px] p-6 sm:p-8 rounded-[1.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border border-[#334155]/50">
+            
+            <!-- Header Judul -->
+            <div class="flex items-center gap-4 mb-8 bg-[#0ea5e9]/10 p-4 rounded-2xl border border-[#0ea5e9]/20 relative overflow-hidden">
+                <i class="fa-solid fa-earth-americas absolute -right-4 -bottom-4 text-6xl text-[#0ea5e9]/10 -rotate-12"></i>
+                
+                <div class="w-14 h-14 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] text-white rounded-xl flex items-center justify-center text-2xl shadow-[0_4px_15px_rgba(14,165,233,0.3)] relative z-10">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-xl font-extrabold text-white">Kurs Mata Uang</h2>
+                    <p class="text-sm text-[#94a3b8] font-medium mt-0.5 flex items-center gap-1">
+                        <i class="fa-solid fa-satellite-dish text-[#38bdf8] text-xs animate-pulse"></i> Data Real-time Global
+                    </p>
+                </div>
+            </div>
+            
+            <!-- List Data Mata Uang -->
+            <div class="space-y-4">
+                
+                <!-- USD -->
+                <div class="flex justify-between items-center p-5 bg-[#020617]/50 border border-[#334155]/70 hover:border-[#0ea5e9]/50 hover:bg-[#0ea5e9]/5 hover:shadow-[0_4px_20px_rgba(14,165,233,0.1)] rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform">🇺🇸</span> 
+                        <div>
+                            <span class="block font-bold text-white text-lg leading-tight">USD</span>
+                            <span class="text-xs font-medium text-[#94a3b8]">Dolar Amerika</span>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['USD'] }}</span>
+                </div>
+
+                <!-- EUR -->
+                <div class="flex justify-between items-center p-5 bg-[#020617]/50 border border-[#334155]/70 hover:border-[#0ea5e9]/50 hover:bg-[#0ea5e9]/5 hover:shadow-[0_4px_20px_rgba(14,165,233,0.1)] rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform">🇪🇺</span> 
+                        <div>
+                            <span class="block font-bold text-white text-lg leading-tight">EUR</span>
+                            <span class="text-xs font-medium text-[#94a3b8]">Euro</span>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['EUR'] }}</span>
+                </div>
+
+                <!-- CNY -->
+                <div class="flex justify-between items-center p-5 bg-[#020617]/50 border border-[#334155]/70 hover:border-[#0ea5e9]/50 hover:bg-[#0ea5e9]/5 hover:shadow-[0_4px_20px_rgba(14,165,233,0.1)] rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform">🇨🇳</span> 
+                        <div>
+                            <span class="block font-bold text-white text-lg leading-tight">CNY</span>
+                            <span class="text-xs font-medium text-[#94a3b8]">Yuan Tiongkok</span>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['CNY'] }}</span>
+                </div>
+
+                <!-- SGD -->
+                <div class="flex justify-between items-center p-5 bg-[#020617]/50 border border-[#334155]/70 hover:border-[#0ea5e9]/50 hover:bg-[#0ea5e9]/5 hover:shadow-[0_4px_20px_rgba(14,165,233,0.1)] rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform">🇸🇬</span> 
+                        <div>
+                            <span class="block font-bold text-white text-lg leading-tight">SGD</span>
+                            <span class="text-xs font-medium text-[#94a3b8]">Dolar Singapura</span>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['SGD'] }}</span>
+                </div>
+
+                <!-- AUD -->
+                <div class="flex justify-between items-center p-5 bg-[#020617]/50 border border-[#334155]/70 hover:border-[#0ea5e9]/50 hover:bg-[#0ea5e9]/5 hover:shadow-[0_4px_20px_rgba(14,165,233,0.1)] rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform">🇦🇺</span> 
+                        <div>
+                            <span class="block font-bold text-white text-lg leading-tight">AUD</span>
+                            <span class="text-xs font-medium text-[#94a3b8]">Dolar Australia</span>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['AUD'] }}</span>
+                </div>
+
+                <!-- MYR -->
+                <div class="flex justify-between items-center p-5 bg-[#020617]/50 border border-[#334155]/70 hover:border-[#0ea5e9]/50 hover:bg-[#0ea5e9]/5 hover:shadow-[0_4px_20px_rgba(14,165,233,0.1)] rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform">🇲🇾</span> 
+                        <div>
+                            <span class="block font-bold text-white text-lg leading-tight">MYR</span>
+                            <span class="text-xs font-medium text-[#94a3b8]">Ringgit Malaysia</span>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['MYR'] }}</span>
+                </div>
+
+            </div>
+
+            <!-- Info Footer Card -->
+            <div class="mt-8 text-center bg-[#020617]/40 py-3 rounded-xl border border-[#334155]/50 border-dashed">
+                <p class="text-[11px] text-[#64748b] font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-chart-line text-[#0ea5e9] mr-1"></i> Berdasarkan rasio tukar global harian
                 </p>
             </div>
-        </div>
-        
-        <!-- List Data Mata Uang -->
-        <div class="space-y-4">
-            
-            <!-- USD -->
-            <div class="flex justify-between items-center p-5 bg-white/70 border border-white shadow-sm hover:shadow-lg hover:shadow-sky-100 hover:bg-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center gap-4">
-                    <span class="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform">🇺🇸</span> 
-                    <div>
-                        <span class="block font-bold text-slate-800 text-lg leading-tight">USD</span>
-                        <span class="text-xs font-semibold text-slate-400">Dolar Amerika</span>
-                    </div>
-                </div>
-                <span class="font-extrabold text-sky-600 text-lg tracking-wide">Rp {{ $conversions['USD'] }}</span>
-            </div>
 
-            <!-- EUR -->
-            <div class="flex justify-between items-center p-5 bg-white/70 border border-white shadow-sm hover:shadow-lg hover:shadow-sky-100 hover:bg-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center gap-4">
-                    <span class="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform">🇪🇺</span> 
-                    <div>
-                        <span class="block font-bold text-slate-800 text-lg leading-tight">EUR</span>
-                        <span class="text-xs font-semibold text-slate-400">Euro</span>
-                    </div>
-                </div>
-                <span class="font-extrabold text-sky-600 text-lg tracking-wide">Rp {{ $conversions['EUR'] }}</span>
-            </div>
-
-            <!-- CNY -->
-            <div class="flex justify-between items-center p-5 bg-white/70 border border-white shadow-sm hover:shadow-lg hover:shadow-sky-100 hover:bg-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center gap-4">
-                    <span class="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform">🇨🇳</span> 
-                    <div>
-                        <span class="block font-bold text-slate-800 text-lg leading-tight">CNY</span>
-                        <span class="text-xs font-semibold text-slate-400">Yuan Tiongkok</span>
-                    </div>
-                </div>
-                <span class="font-extrabold text-sky-600 text-lg tracking-wide">Rp {{ $conversions['CNY'] }}</span>
-            </div>
-
-            <!-- SGD -->
-            <div class="flex justify-between items-center p-5 bg-white/70 border border-white shadow-sm hover:shadow-lg hover:shadow-sky-100 hover:bg-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center gap-4">
-                    <span class="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform">🇸🇬</span> 
-                    <div>
-                        <span class="block font-bold text-slate-800 text-lg leading-tight">SGD</span>
-                        <span class="text-xs font-semibold text-slate-400">Dolar Singapura</span>
-                    </div>
-                </div>
-                <span class="font-extrabold text-sky-600 text-lg tracking-wide">Rp {{ $conversions['SGD'] }}</span>
-            </div>
-
-            <!-- AUD -->
-            <div class="flex justify-between items-center p-5 bg-white/70 border border-white shadow-sm hover:shadow-lg hover:shadow-sky-100 hover:bg-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center gap-4">
-                    <span class="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform">🇦🇺</span> 
-                    <div>
-                        <span class="block font-bold text-slate-800 text-lg leading-tight">AUD</span>
-                        <span class="text-xs font-semibold text-slate-400">Dolar Australia</span>
-                    </div>
-                </div>
-                <span class="font-extrabold text-sky-600 text-lg tracking-wide">Rp {{ $conversions['AUD'] }}</span>
-            </div>
-
-            <!-- MYR -->
-            <div class="flex justify-between items-center p-5 bg-white/70 border border-white shadow-sm hover:shadow-lg hover:shadow-sky-100 hover:bg-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center gap-4">
-                    <span class="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform">🇲🇾</span> 
-                    <div>
-                        <span class="block font-bold text-slate-800 text-lg leading-tight">MYR</span>
-                        <span class="text-xs font-semibold text-slate-400">Ringgit Malaysia</span>
-                    </div>
-                </div>
-                <span class="font-extrabold text-sky-600 text-lg tracking-wide">Rp {{ $conversions['MYR'] }}</span>
-            </div>
-
-        </div>
-
-        <!-- Info Footer Card -->
-        <div class="mt-8 text-center bg-white/50 py-3 rounded-xl border border-white/60">
-            <p class="text-xs text-slate-400 font-medium">Berdasarkan rasio tukar global harian.</p>
         </div>
 
     </div>
