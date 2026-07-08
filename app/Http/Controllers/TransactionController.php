@@ -461,10 +461,17 @@ class TransactionController extends Controller
     //=========================================================================================================================
     // konversi nilai mata uangasinh
 
+    // Halaman Currency: Tampilkan View dulu tanpa blocking
     public function getCurrencyRates()
     {
+        // Langsung render view tanpa tunggu API
+        return view('features.currency'); 
+    }
+
+    // API Endpoint untuk AJAX: Ambil data kurs (dipanggil dari JavaScript)
+    public function getCurrencyRatesApi()
+    {
         try {
-            // Tambahkan timeout(5) agar maksimal loading hanya 5 detik!
             $response = Http::withoutVerifying()
                             ->connectTimeout(2)
                             ->timeout(3)
@@ -487,7 +494,7 @@ class TransactionController extends Controller
             }
 
         } catch (\Exception $e) {
-            // FALLBACK: Akan langsung tereksekusi jika API lambat lebih dari 5 detik
+            // FALLBACK: Akan langsung tereksekusi jika API lambat lebih dari 3 detik
             $conversions = [
                 'USD' => '15.600',
                 'EUR' => '16.900',
@@ -498,7 +505,7 @@ class TransactionController extends Controller
             ];
         }
 
-        return view('features.currency', compact('conversions')); 
+        return response()->json($conversions);
     }
 
     

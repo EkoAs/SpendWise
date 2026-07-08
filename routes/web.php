@@ -102,6 +102,7 @@ Route::post('/wallet/withdraw', [TransactionController::class, 'withdrawCash'])-
 
 // Route GET Khusus API Mata Uang (Karena ini hanya mengambil data)
 Route::get('/wallet/currency', [TransactionController::class, 'getCurrencyRates'])->name('wallet.currency');
+Route::get('/api/currency-rates', [TransactionController::class, 'getCurrencyRatesApi'])->name('api.currency.rates');
 
 
 // liat pin/ lupapin

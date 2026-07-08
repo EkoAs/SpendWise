@@ -94,7 +94,7 @@
                             <span class="text-xs font-medium text-[#94a3b8]">Dolar Amerika</span>
                         </div>
                     </div>
-                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['USD'] }}</span>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide" id="usd-rate">Memuat...</span>
                 </div>
 
                 <!-- EUR -->
@@ -106,7 +106,7 @@
                             <span class="text-xs font-medium text-[#94a3b8]">Euro</span>
                         </div>
                     </div>
-                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['EUR'] }}</span>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide" id="eur-rate">Memuat...</span>
                 </div>
 
                 <!-- CNY -->
@@ -118,7 +118,7 @@
                             <span class="text-xs font-medium text-[#94a3b8]">Yuan Tiongkok</span>
                         </div>
                     </div>
-                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['CNY'] }}</span>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide" id="cny-rate">Memuat...</span>
                 </div>
 
                 <!-- SGD -->
@@ -130,7 +130,7 @@
                             <span class="text-xs font-medium text-[#94a3b8]">Dolar Singapura</span>
                         </div>
                     </div>
-                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['SGD'] }}</span>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide" id="sgd-rate">Memuat...</span>
                 </div>
 
                 <!-- AUD -->
@@ -142,7 +142,7 @@
                             <span class="text-xs font-medium text-[#94a3b8]">Dolar Australia</span>
                         </div>
                     </div>
-                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['AUD'] }}</span>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide" id="aud-rate">Memuat...</span>
                 </div>
 
                 <!-- MYR -->
@@ -154,7 +154,7 @@
                             <span class="text-xs font-medium text-[#94a3b8]">Ringgit Malaysia</span>
                         </div>
                     </div>
-                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide">Rp {{ $conversions['MYR'] }}</span>
+                    <span class="font-extrabold text-[#38bdf8] text-lg tracking-wide" id="myr-rate">Memuat...</span>
                 </div>
 
             </div>
@@ -169,6 +169,38 @@
         </div>
 
     </div>
+
+    <!-- Script untuk Load Data Kurs via AJAX (seperti di Dashboard) -->
+    <script>
+        async function fetchCurrencyRates() {
+            try {
+                const response = await fetch("{{ route('api.currency.rates') }}");
+                const data = await response.json();
+                
+                // Update setiap mata uang
+                document.getElementById('usd-rate').innerText = 'Rp ' + data.USD;
+                document.getElementById('eur-rate').innerText = 'Rp ' + data.EUR;
+                document.getElementById('cny-rate').innerText = 'Rp ' + data.CNY;
+                document.getElementById('sgd-rate').innerText = 'Rp ' + data.SGD;
+                document.getElementById('aud-rate').innerText = 'Rp ' + data.AUD;
+                document.getElementById('myr-rate').innerText = 'Rp ' + data.MYR;
+            } catch (error) {
+                console.error('Gagal mengambil data kurs:', error);
+                
+                // Tampilkan error ke user dengan style yang sama
+                const errorText = 'Error';
+                document.getElementById('usd-rate').innerText = errorText;
+                document.getElementById('eur-rate').innerText = errorText;
+                document.getElementById('cny-rate').innerText = errorText;
+                document.getElementById('sgd-rate').innerText = errorText;
+                document.getElementById('aud-rate').innerText = errorText;
+                document.getElementById('myr-rate').innerText = errorText;
+            }
+        }
+
+        // Jalankan saat halaman selesai dimuat (seperti di dashboard)
+        fetchCurrencyRates();
+    </script>
 
 </body>
 </html>
